@@ -1,0 +1,276 @@
+/* =====================================================================
+   login.css v9 — صفحه‌ی ورود (پنل استاد + اپ دانش‌آموز)
+   آرورای متحرک، شیشه‌ی مات، حاشیه‌ی گرادیانی، کارت‌های شناور، حالت موفقیت و خطا
+   فقط transform و opacity انیمیت می‌شوند تا روی گوشی‌های ضعیف هم روان باشد.
+   ===================================================================== */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+:is(#lg, #v-login) {
+  --lg-card: color-mix(in srgb, var(--pop, var(--card2, #121832)) 74%, transparent);
+  --lg-line: rgba(255, 255, 255, .13);
+  --lg-field: rgba(255, 255, 255, .06);
+  --lg-field-h: rgba(255, 255, 255, .095);
+  --lg-ink: var(--t, #eef2ff);
+  --lg-mut: var(--m, #a5b0d6);
+  --lg-bad: var(--r, #fb7185);
+  --lg-base: #070b1d;
+  --lg-ease: cubic-bezier(.2, .8, .2, 1);
+}
+:root[data-theme="light"] :is(#lg, #v-login) {
+  --lg-card: rgba(255, 255, 255, .78);
+  --lg-line: rgba(30, 40, 100, .13);
+  --lg-field: rgba(30, 40, 110, .05);
+  --lg-field-h: rgba(30, 40, 110, .085);
+  --lg-base: #eef1fb;
+}
+
+/* ---------- صحنه ---------- */
+#lg { position: fixed; inset: 0; z-index: 50; }
+#v-login .lgw { position: relative; }
+#lg, #v-login .lgw {
+  isolation: isolate; overflow-x: hidden;
+  background:
+    radial-gradient(1200px 700px at 90% -10%, color-mix(in srgb, var(--v, #a78bfa) 26%, transparent), transparent 62%),
+    radial-gradient(1000px 620px at -5% 110%, color-mix(in srgb, var(--a, #5eead4) 22%, transparent), transparent 62%),
+    var(--lg-base) !important;
+}
+#lg {
+  display: grid; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  place-items: start center; padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom)) !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+#v-login .lgw { min-height: 100vh; min-height: 100dvh; place-items: start center; padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom)); }
+:is(#lg, #v-login) .lgc { margin: auto !important; }
+
+/* لایه‌ی آرورا */
+:is(#lg, #v-login) .lgaur { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+:is(#lg, #v-login) .lgaur i {
+  position: absolute; border-radius: 50%; will-change: transform;
+  width: min(62vw, 560px); aspect-ratio: 1;
+  background: radial-gradient(circle at 50% 50%, var(--c, #7c3aed) 0%, transparent 68%);
+  opacity: .55; animation: lgdrift 22s ease-in-out infinite alternate;
+}
+:is(#lg, #v-login) .lgaur i:nth-child(1) { --c: var(--v, #7c3aed); top: -18%; right: -10%; }
+:is(#lg, #v-login) .lgaur i:nth-child(2) { --c: var(--a, #14b8a6); bottom: -22%; left: -12%; animation-duration: 28s; animation-delay: -9s; }
+:is(#lg, #v-login) .lgaur i:nth-child(3) { --c: #ec4899; width: min(40vw, 380px); top: 38%; left: 38%; opacity: .26; animation-duration: 34s; animation-delay: -15s; }
+@keyframes lgdrift { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-7%, 9%, 0) scale(1.14); } 100% { transform: translate3d(6%, -6%, 0) scale(.94); } }
+/* شبکه‌ی نقطه‌ای ملایم */
+:is(#lg, #v-login) .lgaur::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .16) 1px, transparent 1.3px); background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse at 50% 45%, #000 0%, transparent 72%);
+  opacity: .5;
+}
+:root[data-theme="light"] :is(#lg, #v-login) .lgaur::after { background-image: radial-gradient(rgba(40, 50, 120, .2) 1px, transparent 1.3px); opacity: .4; }
+:root[data-theme="light"] :is(#lg, #v-login) .lgaur i { opacity: .38; }
+:is(#lg, #v-login) .lgcv { display: block !important; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: .9; }
+
+/* ---------- کارت ---------- */
+:is(#lg, #v-login) .lgc {
+  position: relative !important; z-index: 1;
+  width: min(432px, 100%) !important; flex-direction: row !important; overflow: hidden !important; padding: 0 !important; gap: 0 !important;
+  border: 0 !important; border-radius: 28px !important;
+  background: var(--lg-card) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4) !important; backdrop-filter: blur(22px) saturate(1.4) !important;
+  box-shadow: 0 50px 100px -40px rgba(0, 0, 0, .65), 0 0 0 1px var(--lg-line), inset 0 1px 0 rgba(255, 255, 255, .14) !important;
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) !important;
+  transition: transform .35s var(--lg-ease), opacity .5s, filter .5s !important;
+  animation: lgin .75s var(--lg-ease) both !important;
+}
+:root[data-theme="light"] :is(#lg, #v-login) .lgc { box-shadow: 0 40px 80px -36px rgba(40, 50, 120, .35), 0 0 0 1px var(--lg-line), inset 0 1px 0 #fff !important; }
+/* ورود/خروج کارت با translate/scale (نه transform) چون transform کارت برای چرخش سه‌بعدی رزرو است */
+@keyframes lgin { from { opacity: 0; translate: 0 26px; scale: .965; filter: blur(6px); } to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); } }
+@keyframes lgout { from { opacity: 1; scale: 1; filter: blur(0); } to { opacity: 0; scale: 1.06; filter: blur(8px); } }
+/* حاشیه‌ی گرادیانی چرخان */
+:is(#lg, #v-login) .lgc::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; z-index: 5;
+  background: conic-gradient(from var(--ang), transparent 0deg, var(--a, #5eead4) 70deg, var(--v, #a78bfa) 140deg, #ec4899 200deg, transparent 280deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: .75; animation: lgang 9s linear infinite;
+}
+@keyframes lgang { to { --ang: 360deg; } }
+:is(#lg, #v-login) .lgspot { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .4s; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, .1), transparent 62%); }
+:is(#lg, #v-login) .lgc:hover .lgspot { opacity: 1; }
+:is(#lg, #v-login) .lgc > * { animation: none !important; }
+
+/* ---------- فرم ---------- */
+:is(#lg, #v-login) .lgform { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 34px 28px 22px; }
+:is(#lg, #v-login) .lgform > * { animation: lgrise .7s var(--lg-ease) both !important; animation-delay: calc(var(--i, 0) * 62ms + 160ms) !important; }
+@keyframes lgrise { from { opacity: 0; transform: translateY(18px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* لوگو با حلقه‌ی مداری */
+:is(#lg, #v-login) :is(.lgl, .logo) {
+  position: relative; isolation: isolate; width: 64px !important; height: 64px !important; border-radius: 21px !important; margin: 0 auto 4px !important;
+  display: grid; place-items: center; color: #08102a !important; flex: none;
+  background: linear-gradient(135deg, var(--a, #5eead4), var(--v, #a78bfa)) !important;
+  box-shadow: 0 14px 34px -10px color-mix(in srgb, var(--v, #a78bfa) 80%, transparent), inset 0 1px 0 rgba(255, 255, 255, .5) !important;
+  animation: lgfloat 5s ease-in-out infinite !important; animation-delay: 0s !important;
+}
+:is(#lg, #v-login) :is(.lgl, .logo) svg { stroke: #08102a !important; }
+:is(#lg, #v-login) :is(.lgl, .logo)::before, :is(#lg, #v-login) :is(.lgl, .logo)::after {
+  content: ''; position: absolute; inset: -9px; border-radius: 28px; z-index: -1; pointer-events: none;
+  border: 1.5px solid color-mix(in srgb, var(--a, #5eead4) 55%, transparent); animation: lgpulse 3.2s ease-out infinite;
+}
+:is(#lg, #v-login) :is(.lgl, .logo)::after { animation-delay: 1.6s; border-color: color-mix(in srgb, var(--v, #a78bfa) 55%, transparent); }
+@keyframes lgfloat { 50% { transform: translateY(-5px) rotate(-3deg); } }
+@keyframes lgpulse { 0% { transform: scale(.82); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
+
+:is(#lg, #v-login) :is(.lgt) {
+  margin: 4px 0 0 !important; text-align: center; font-size: 26px !important; font-weight: 800; letter-spacing: -.3px; line-height: 1.5;
+  background: linear-gradient(100deg, var(--lg-ink) 0%, var(--a, #5eead4) 35%, var(--v, #a78bfa) 65%, var(--lg-ink) 100%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent !important; -webkit-text-fill-color: transparent;
+  animation: lgrise .7s var(--lg-ease) both, lgshine 7s linear 1s infinite !important; animation-delay: calc(var(--i, 0) * 62ms + 160ms), 1s !important;
+}
+@keyframes lgshine { to { background-position: -250% 0; } }
+:is(#lg, #v-login) :is(.lgs, #lgSub) { text-align: center; color: var(--lg-mut); font-size: 13.5px; min-height: 22px !important; margin: -6px 0 6px !important; transition: opacity .35s, transform .35s !important; }
+:is(#lg, #v-login) .lgs.out, :is(#lg, #v-login) #lgSub.out { opacity: 0 !important; transform: translateY(-6px); }
+
+/* ---------- فیلدها ---------- */
+:is(#lg, #v-login) .fx > span { font-size: 12.5px; font-weight: 500; color: var(--lg-mut); padding-inline: 4px; transition: color .2s; }
+:is(#lg, #v-login) .fx:focus-within > span { color: var(--a, #5eead4); }
+:is(#lg, #v-login) .fxw {
+  position: relative; height: 54px; border-radius: 16px; overflow: hidden;
+  background: var(--lg-field) !important; border: 1.5px solid var(--lg-line) !important;
+  transition: border-color .25s, box-shadow .25s, background .25s, transform .25s var(--lg-ease);
+}
+:is(#lg, #v-login) .fxw:hover { background: var(--lg-field-h) !important; }
+:is(#lg, #v-login) .fxw:focus-within {
+  border-color: var(--a, #5eead4) !important; background: var(--lg-field-h) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--a, #5eead4) 18%, transparent), 0 10px 26px -14px color-mix(in srgb, var(--a, #5eead4) 70%, transparent);
+  transform: translateY(-1px);
+}
+:is(#lg, #v-login) .fxw::after { content: ''; position: absolute; inset: auto 0 0 0; height: 2px; background: linear-gradient(90deg, var(--a, #5eead4), var(--v, #a78bfa)); transform: scaleX(0); transform-origin: 100% 50%; transition: transform .45s var(--lg-ease); }
+:is(#lg, #v-login) .fxw:focus-within::after { transform: scaleX(1); }
+:is(#lg, #v-login) .fxw.err { border-color: var(--lg-bad) !important; box-shadow: 0 0 0 4px color-mix(in srgb, var(--lg-bad) 16%, transparent); animation: lgnudge .4s; }
+@keyframes lgnudge { 25% { transform: translateX(6px); } 75% { transform: translateX(-6px); } }
+:is(#lg, #v-login) .fxw input { font-size: 16px !important; }      /* ۱۶px تا iOS هنگام فوکوس زوم نکند */
+:is(#lg, #v-login) .fxw > svg { color: var(--lg-mut); transition: color .25s, transform .35s var(--lg-ease); }
+:is(#lg, #v-login) .fxw:focus-within > svg { color: var(--a, #5eead4); transform: scale(1.12); }
+
+:is(#lg, #v-login) .caps { margin-top: -6px; padding: 7px 12px; border-radius: 12px; font-size: 12.5px; text-align: center; color: var(--y, #fbbf24); background: color-mix(in srgb, var(--y, #fbbf24) 12%, transparent); border: 1px solid color-mix(in srgb, var(--y, #fbbf24) 35%, transparent); }
+:is(#lg, #v-login) .lgerr { display: block; min-height: 0; padding: 0; margin-top: -4px; text-align: center; font-size: 13px; color: var(--lg-bad); overflow: hidden; max-height: 0; opacity: 0; transition: max-height .35s var(--lg-ease), opacity .3s, padding .3s; }
+:is(#lg, #v-login) .lgerr:not(:empty) { max-height: 90px; opacity: 1; padding: 9px 12px; border-radius: 12px; background: color-mix(in srgb, var(--lg-bad) 11%, transparent); border: 1px solid color-mix(in srgb, var(--lg-bad) 30%, transparent); line-height: 1.8; }
+:is(#lg, #v-login) .lgnet { display: none; align-items: center; justify-content: center; gap: 8px; margin-top: -6px; font-size: 12.5px; color: var(--y, #fbbf24); }
+:is(#lg, #v-login) .lgnet.on { display: flex; }
+:is(#lg, #v-login) .lgnet::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: lgblink 1.2s infinite; }
+@keyframes lgblink { 50% { opacity: .2; } }
+
+/* ---------- دکمه‌ی ورود ---------- */
+:is(#lg, #v-login) :is(.lgb, .lgx) {
+  position: relative; overflow: hidden; display: flex !important; align-items: center; justify-content: center; gap: 10px;
+  height: 54px; min-height: 54px; padding: 0 20px !important; border: 0 !important; border-radius: 16px !important;
+  font-size: 16px !important; font-weight: 800; letter-spacing: .1px; color: #07102a !important; cursor: pointer;
+  background: linear-gradient(110deg, var(--a, #5eead4), var(--v, #a78bfa) 45%, #ec4899 75%, var(--a, #5eead4)) !important; background-size: 260% 100% !important;
+  box-shadow: 0 16px 34px -14px color-mix(in srgb, var(--v, #a78bfa) 85%, transparent), inset 0 1px 0 rgba(255, 255, 255, .45) !important;
+  animation: lgrise .7s var(--lg-ease) both, lgshim 6s linear 1s infinite !important; animation-delay: calc(var(--i, 0) * 62ms + 160ms), 1s !important;
+  transition: transform .2s var(--lg-ease), box-shadow .3s, filter .2s !important;
+}
+:root[data-theme="light"] :is(#lg, #v-login) :is(.lgb, .lgx) { color: #fff !important; text-shadow: 0 1px 2px rgba(10, 16, 48, .35); }
+@keyframes lgshim { to { background-position: -260% 0; } }
+:is(#lg, #v-login) :is(.lgb, .lgx):hover { transform: translateY(-2px); box-shadow: 0 22px 40px -14px color-mix(in srgb, var(--v, #a78bfa) 90%, transparent), inset 0 1px 0 rgba(255, 255, 255, .5) !important; }
+:is(#lg, #v-login) :is(.lgb, .lgx):active { transform: translateY(0) scale(.985); }
+:is(#lg, #v-login) :is(.lgb, .lgx) .lba { flex: none; transition: transform .3s var(--lg-ease); }
+:is(#lg, #v-login) :is(.lgb, .lgx):hover .lba { transform: translateX(-4px); }
+:is(#lg, #v-login) :is(.lgb, .lgx) .lbk { position: absolute; inset: 0; margin: auto; transform: scale(0); opacity: 0; }
+:is(#lg, #v-login) :is(.lgb, .lgx) .lbk path { stroke-dasharray: 26; stroke-dashoffset: 26; }
+:is(#lg, #v-login) :is(.lgb, .lgx) .spn { display: none; width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid currentColor; border-top-color: transparent; animation: spn .7s linear infinite; }
+:is(#lg, #v-login) :is(.lgb, .lgx):disabled, :is(#lg, #v-login) :is(.lgx, .lgb).busy { opacity: .85; pointer-events: none; }
+:is(#lg, #v-login) :is(.lgb, .lgx):disabled .spn { display: inline-block; }
+:is(#lg, #v-login) :is(.lgb, .lgx):disabled .lba, :is(#lg, #v-login) :is(.lgx, .lgb).busy .lba { display: none; }
+:is(#lg, #v-login) .lgx.busy::after { display: none; }
+:is(#lg, #v-login) .lgx.busy .spn { display: inline-block; }
+:is(#lg, #v-login) :is(.lgb, .lgx) .lbt { transition: transform .35s var(--lg-ease), opacity .25s; }
+:is(#lg, #v-login) .lgc.lg-ok :is(.lgb, .lgx) { background: linear-gradient(110deg, #34d399, #10b981) !important; animation: none !important; opacity: 1 !important; pointer-events: none; }
+:is(#lg, #v-login) .lgc.lg-ok :is(.lgb, .lgx) :is(.lbt, .lba, .spn) { display: none !important; }
+:is(#lg, #v-login) .lgc.lg-ok :is(.lgb, .lgx) .lbk { opacity: 1; transform: scale(1); transition: transform .45s cubic-bezier(.2, 1.4, .3, 1), opacity .2s; }
+:is(#lg, #v-login) .lgc.lg-ok :is(.lgb, .lgx) .lbk path { stroke-dashoffset: 0; transition: stroke-dashoffset .45s .12s ease-out; }
+
+/* موفقیت: کارت کمی بزرگ می‌شود، محو می‌شود و حلقه‌ی نور پخش می‌شود */
+:is(#lg, #v-login) .lgc.lg-ok { animation: lgout .55s ease-in .45s both !important; }
+:is(#lg, #v-login) .lgburst { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; pointer-events: none; z-index: 0; border: 2px solid var(--a, #5eead4); opacity: 0; }
+.lg-ok .lgburst { animation: lgburst .9s ease-out .25s both; }
+.lg-ok .lgburst.b2 { animation-delay: .4s; border-color: var(--v, #a78bfa); }
+@keyframes lgburst { 0% { transform: scale(.4); opacity: .9; } 100% { transform: scale(14); opacity: 0; } }
+
+/* خطا */
+:is(#lg, #v-login) .lgform.lg-shake { animation: lgshake .45s !important; }
+@keyframes lgshake { 15% { transform: translateX(10px); } 35% { transform: translateX(-9px); } 55% { transform: translateX(6px); } 75% { transform: translateX(-3px); } }
+
+/* ---------- پایین فرم: راهنما، تم، اعتبار ---------- */
+:is(#lg, #v-login) .lgfg { all: unset; box-sizing: border-box; align-self: center; cursor: pointer; font-size: 12.5px; color: var(--lg-mut); padding: 2px 8px; border-radius: 8px; transition: color .2s; }
+:is(#lg, #v-login) .lgfg:hover, :is(#lg, #v-login) .lgfg:focus-visible { color: var(--a, #5eead4); }
+:is(#lg, #v-login) .lgfh { font-size: 12.5px; line-height: 2; color: var(--lg-mut); padding: 10px 14px; border-radius: 14px; background: var(--lg-field); border: 1px dashed var(--lg-line); animation: lgrise .4s var(--lg-ease) both !important; }
+:is(#lg, #v-login) .lgfh[hidden] { display: none; }
+:is(#lg, #v-login) .lgth { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 10px; margin: 0 auto; border-radius: 99px; background: var(--lg-field); border: 1px solid var(--lg-line); width: fit-content; }
+:is(#lg, #v-login) .lgth .acc { width: 22px; height: 22px; border-width: 2px; }
+:is(#lg, #v-login) .lgth .md { width: 30px; height: 30px; font-size: 15px; transition: transform .35s var(--lg-ease); }
+:is(#lg, #v-login) .lgth .md:hover { transform: rotate(25deg) scale(1.1); }
+:is(#lg, #v-login) .lgsep { margin: 0; }
+:is(#lg, #v-login) .lglink { height: 48px; border-radius: 15px; background: var(--lg-field); border: 1px solid var(--lg-line); transition: transform .25s var(--lg-ease), border-color .2s, background .2s; }
+:is(#lg, #v-login) .lglink:hover { transform: translateY(-2px); background: var(--lg-field-h); border-color: var(--a, #5eead4); }
+:is(#lg, #v-login) .lglink svg { transition: transform .3s var(--lg-ease); }
+:is(#lg, #v-login) .lglink:hover svg { transform: translateX(-3px); }
+:is(#lg, #v-login) .credit { padding: 6px 0 0; }
+
+/* ---------- پنل برند (دسکتاپ) ---------- */
+:is(#lg, #v-login) .lgbrand { display: none; }
+@media (min-width: 900px) {
+  :is(#lg, #v-login) .lgc { width: min(940px, 96vw) !important; min-height: 580px; }
+  :is(#lg, #v-login) .lgform { padding: 54px 52px 26px; justify-content: center; }
+  :is(#lg, #v-login) :is(.lgl, .logo) { display: none !important; }
+  :is(#lg, #v-login) .lgt { text-align: right !important; font-size: 30px !important; }
+  :is(#lg, #v-login) :is(.lgs, #lgSub) { text-align: right !important; margin-bottom: 12px !important; }
+  :is(#lg, #v-login) .lgbrand {
+    display: flex; flex-direction: column; width: 43%; flex: none; padding: 46px 38px 28px; color: #fff; position: relative; overflow: hidden; z-index: 2;
+    background:
+      radial-gradient(500px 340px at 85% 0%, rgba(255, 255, 255, .16), transparent 65%),
+      linear-gradient(155deg, color-mix(in srgb, var(--v, #6366f1) 62%, #0a1030) 0%, color-mix(in srgb, var(--a, #14b8a6) 46%, #0a1030) 100%);
+  }
+  :is(#lg, #v-login) .lgbrand::before, :is(#lg, #v-login) .lgbrand::after { content: ''; position: absolute; border-radius: 50%; pointer-events: none; background: rgba(255, 255, 255, .08); animation: lgdrift 18s ease-in-out infinite alternate; }
+  :is(#lg, #v-login) .lgbrand::before { width: 360px; height: 360px; top: -140px; left: -130px; }
+  :is(#lg, #v-login) .lgbrand::after { width: 250px; height: 250px; bottom: -100px; right: -80px; animation-delay: -7s; }
+  :is(#lg, #v-login) .lgbrand > * { position: relative; z-index: 1; }
+  :is(#lg, #v-login) .bmark { width: 60px; height: 60px; border-radius: 19px; display: grid; place-items: center; background: rgba(255, 255, 255, .2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 12px 30px -12px rgba(0, 0, 0, .4); margin-bottom: 22px; animation: lgfloat 5s ease-in-out infinite; }
+  :is(#lg, #v-login) .lgbrand h2 { font-size: 27px; font-weight: 800; line-height: 1.55; letter-spacing: -.3px; margin: 0 0 8px; }
+  :is(#lg, #v-login) .lgbrand p { margin: 0 0 22px; font-size: 14.5px; line-height: 1.9; opacity: .88; }
+  :is(#lg, #v-login) .lgbrand ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
+  :is(#lg, #v-login) .lgbrand li { display: flex; align-items: center; gap: 11px; opacity: 0; animation: lgrise .6s var(--lg-ease) both; }
+  :is(#lg, #v-login) .lgbrand li:nth-child(1) { animation-delay: .5s; } :is(#lg, #v-login) .lgbrand li:nth-child(2) { animation-delay: .6s; }
+  :is(#lg, #v-login) .lgbrand li:nth-child(3) { animation-delay: .7s; } :is(#lg, #v-login) .lgbrand li:nth-child(4) { animation-delay: .8s; }
+  :is(#lg, #v-login) .lgbrand li i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, .22); }
+  :is(#lg, #v-login) .bfoot { margin-top: auto; padding-top: 20px; font-size: 11.5px; opacity: .72; }
+  :is(#lg, #v-login) .lgform .credit { display: none; }
+  /* کارت‌های شناورِ نمایشی */
+  :is(#lg, #v-login) .lgshow { position: relative; height: 138px; margin-top: auto; }
+  :is(#lg, #v-login) .lgshow + .bfoot { margin-top: 0; }
+  :is(#lg, #v-login) .sc { position: absolute; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 12px; border-radius: 16px; font-size: 12.5px; line-height: 1.5; white-space: nowrap;
+    background: rgba(255, 255, 255, .17); border: 1px solid rgba(255, 255, 255, .28); box-shadow: 0 14px 30px -14px rgba(0, 0, 0, .5);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: lgbob 6s ease-in-out infinite; }
+  :is(#lg, #v-login) .sc b { display: block; font-size: 14px; font-weight: 800; }
+  :is(#lg, #v-login) .sc small { opacity: .8; font-size: 11px; }
+  :is(#lg, #v-login) .sc .sci { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: rgba(255, 255, 255, .24); flex: none; }
+  :is(#lg, #v-login) .sc:nth-child(1) { top: 0; right: 0; }
+  :is(#lg, #v-login) .sc:nth-child(2) { top: 46px; left: 0; animation-delay: -2s; }
+  :is(#lg, #v-login) .sc:nth-child(3) { bottom: 0; right: 26px; animation-delay: -4s; }
+  :is(#lg, #v-login) .sc .dot { width: 9px; height: 9px; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 0 rgba(52, 211, 153, .7); animation: lgring 1.8s infinite; }
+  @keyframes lgbob { 50% { transform: translateY(-9px); } }
+  @keyframes lgring { 70% { box-shadow: 0 0 0 9px rgba(52, 211, 153, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } }
+}
+@media (max-width: 899px) {
+  :is(#lg, #v-login) .lgform { padding: 30px 22px 20px; }
+}
+@media (max-width: 380px) {
+  :is(#lg, #v-login) .lgform { padding: 26px 16px 16px; gap: 12px; }
+  :is(#lg, #v-login) .lgt { font-size: 23px !important; }
+}
+@media (max-height: 640px) and (max-width: 899px) {
+  :is(#lg, #v-login) :is(.lgl, .logo) { width: 50px !important; height: 50px !important; }
+  :is(#lg, #v-login) .lgform { padding-top: 22px; gap: 11px; }
+}
+
+/* کاهش حرکت: همه‌ی انیمیشن‌ها خاموش، ظاهر ثابت می‌ماند */
+@media (prefers-reduced-motion: reduce) {
+  :is(#lg, #v-login) *, :is(#lg, #v-login) *::before, :is(#lg, #v-login) *::after { animation: none !important; }
+  :is(#lg, #v-login) .lgform > *, :is(#lg, #v-login) .lgbrand li { opacity: 1 !important; transform: none !important; filter: none !important; }
+  :is(#lg, #v-login) .lgc { transition: none !important; }
+}

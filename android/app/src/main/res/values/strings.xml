@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">کلاس طراحی سایت</string>
+    <!-- Put your site address here (e.g. https://example.ir) so students do not have to type it -->
+    <string name="default_server"></string>
+</resources>

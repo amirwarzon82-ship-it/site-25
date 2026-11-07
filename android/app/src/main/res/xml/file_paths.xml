@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- عکس‌هایی که با دوربین گرفته می‌شود موقتاً در کش اپ ذخیره می‌شود -->
+<paths>
+    <cache-path name="camera" path="camera/" />
+</paths>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e2a;--t:#eef2ff;--m:#a5b0d6;--g:rgba(255,255,255,.07);--gb:rgba(255,255,255,.15);--a:#5eead4;--v:#a78bfa;--r:#fb7185}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--t);font:400 15px/1.8 Vazirmatn,Tahoma,sans-serif;display:grid;place-items:center;padding:20px;overflow:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;z-index:0;animation:dr 22s ease-in-out infinite alternate}
+.o1{width:360px;height:360px;background:#6d28d9;top:-120px;right:-80px}
+.o2{width:320px;height:320px;background:#0d9488;bottom:-100px;left:-60px;animation-delay:-8s}
+@keyframes dr{to{transform:translate(50px,-40px) scale(1.15)}}
+.glass{position:relative;z-index:1;width:min(400px,100%);padding:30px 24px;background:rgba(20,26,66,.7);border:1px solid var(--gb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:12px;text-align:center;animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.97)}}
+.logo{width:68px;height:68px;border-radius:22px;margin:0 auto 4px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--v));animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 40px rgba(167,139,250,.7)}}
+h1{font-size:22px;font-weight:800}
+p{color:var(--m);font-size:13.5px}
+input{font:inherit;color:var(--t);background:rgba(255,255,255,.08);border:1px solid var(--gb);border-radius:14px;padding:11px 14px;text-align:left;width:100%;outline:none}
+input:focus{border-color:var(--a)}
+input::placeholder{color:#7e8ab3}
+.bt{font:inherit;cursor:pointer;border:1px solid var(--gb);border-radius:14px;padding:11px;color:var(--t);background:rgba(255,255,255,.09);transition:.2s}
+.bt:active{transform:scale(.97)}
+.main{background:linear-gradient(135deg,var(--a),var(--v));color:#07102a;font-weight:800;border:0}
+.err{color:var(--r);min-height:22px;font-size:13px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.glass::after{content:'';position:absolute;inset:-1.5px;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--ang,0deg),#5eead4,#a78bfa,#ec4899,#fbbf24,#5eead4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:ang 7s linear infinite;opacity:.8}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes ang{to{--ang:360deg}}
+.main{background:linear-gradient(110deg,var(--a),var(--v) 40%,#ec4899 60%,var(--a))!important;background-size:250% 100%;animation:shim 5s linear infinite;box-shadow:0 10px 30px -8px rgba(167,139,250,.7)}
+@keyframes shim{to{background-position:-250% 0}}
+h1{background:linear-gradient(90deg,var(--a),var(--v));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo{box-shadow:0 0 0 6px rgba(167,139,250,.12),0 0 0 14px rgba(94,234,212,.07),0 12px 40px rgba(167,139,250,.55)}
+.o3{width:200px;height:200px;background:#be185d;top:45%;left:40%;opacity:.28;animation-delay:-14s}
+</style><title>اتصال برقرار نیست</title></head>
+<body><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div class="glass">
+<div class="logo"><svg width="38" height="38" viewBox="0 0 512 512"><rect x="136" y="104" width="240" height="304" rx="36" fill="#0a0e2a" opacity=".92"/><path d="M186 172h140M186 224h90" stroke="#eef2ff" stroke-width="22" stroke-linecap="round" opacity=".55" fill="none"/><path d="M196 318l40 40 82-92" fill="none" stroke="#5eead4" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<h1>اتصال برقرار نیست</h1>
+<p>اینترنت یا آدرس سرور را بررسی کنید و دوباره تلاش کنید.</p>
+<button class="bt main" onclick="window.Android&&Android.retry()">تلاش دوباره</button>
+<button class="bt" onclick="window.Android&&Android.changeServer()">تغییر آدرس سرور</button>
+</div>
+<script>
+window.addEventListener('online',function(){if(window.Android&&Android.retry)Android.retry()});
+</script></body></html>

@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'ir.classpanel.student'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'ir.classpanel.student'
+        minSdk 21
+        targetSdk 34
+        versionCode 3
+        versionName '3.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // فقط برای FileProvider (ذخیره‌ی عکسِ دوربین)
+    implementation 'androidx.core:core:1.13.1'
+}

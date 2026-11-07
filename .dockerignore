@@ -1,0 +1,9 @@
+android
+docs
+assets
+*.md
+.git
+.github
+.env
+data
+class-data

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>کلاس من</title>
+<meta name="theme-color" content="#0a0e2a">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e2a;--t:#eef2ff;--m:#a5b0d6;--g:rgba(255,255,255,.07);--gb:rgba(255,255,255,.15);--a:#5eead4;--v:#a78bfa;--r:#fb7185;--y:#fbbf24;--s1:rgba(255,255,255,.06);--s2:rgba(255,255,255,.12);--onm:#07102a;--sh:0 10px 40px rgba(0,0,0,.25);--card2:rgba(20,26,66,.9);--orb:.5;--ok:rgba(94,234,212,.16);--bad:rgba(251,113,133,.16);color-scheme:dark}
+:root[data-theme="light"]{--bg:#eef1fb;--t:#161a3d;--m:#5b6492;--g:rgba(255,255,255,.72);--gb:rgba(40,50,120,.14);--a:#0d9488;--v:#7c3aed;--r:#e11d48;--y:#d97706;--s1:rgba(30,40,110,.05);--s2:rgba(30,40,110,.1);--onm:#fff;--sh:0 10px 30px rgba(40,50,120,.12);--card2:rgba(255,255,255,.95);--orb:.28;--ok:rgba(13,148,136,.14);--bad:rgba(225,29,72,.12);color-scheme:light}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font:400 15px/1.8 Vazirmatn,Tahoma,sans-serif;min-height:100vh;min-height:100dvh;overflow-x:hidden;transition:background .4s,color .4s}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:var(--orb);z-index:0;animation:dr 22s ease-in-out infinite alternate;pointer-events:none}
+.o1{width:380px;height:380px;background:#6d28d9;top:-120px;right:-100px}
+.o2{width:340px;height:340px;background:#0d9488;bottom:-100px;left:-80px;animation-delay:-8s}
+.o3{width:240px;height:240px;background:#be185d;top:45%;left:40%;opacity:calc(var(--orb) * .55);animation-delay:-14s}
+@keyframes dr{to{transform:translate(50px,-40px) scale(1.15)}}
+.view{display:none;position:relative;z-index:1;min-height:100vh;min-height:100dvh}
+.view.on{display:block}
+.wrap{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(104px + env(safe-area-inset-bottom,0px))}
+.glass{background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:22px;box-shadow:var(--sh)}
+.card{padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden;transition:transform .35s,border-color .35s}
+.card:before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.14),transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover:before{opacity:1}
+@media(hover:hover){.card:hover{transform:translateY(-2px);border-color:rgba(94,234,212,.4)}}
+h1{font-size:24px;font-weight:800;line-height:1.5}
+h2{font-size:17px;font-weight:800;margin:20px 4px 10px;display:flex;align-items:center;gap:8px}
+h2 small{font-weight:400;color:var(--m);font-size:12px;margin-right:auto}
+h3{font-size:15px;font-weight:800}
+.sub{color:var(--m);font-size:13px}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(20px) scale(.97)}}
+.fadein{animation:fi .4s both}@keyframes fi{from{opacity:0}}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.bt{position:relative;overflow:hidden;min-height:44px;padding:8px 20px;border-radius:14px;background:var(--s2);border:1px solid var(--gb);font-weight:500;font-size:14px;transition:transform .2s,background .2s,opacity .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;color:var(--t)}
+.bt:active{transform:scale(.97)}
+.bt.main{background:linear-gradient(135deg,var(--a),var(--v));color:var(--onm);font-weight:800;border:0}
+.bt.full{width:100%}
+.bt[disabled]{opacity:.45;pointer-events:none}
+.bt.busy:after{content:'';width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rp{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);width:40px;height:40px;margin:-20px 0 0 -20px;transform:scale(0);animation:rp .6s ease-out;pointer-events:none}
+@keyframes rp{to{transform:scale(7);opacity:0}}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:2px 12px;border-radius:99px;background:var(--s2);border:1px solid var(--gb);font-size:12px;white-space:nowrap}
+.chip.open{background:var(--ok);color:var(--a);border-color:rgba(94,234,212,.4)}
+.chip.soon{background:rgba(251,191,36,.15);color:var(--y);border-color:rgba(251,191,36,.4)}
+.chip.closed{background:var(--bad);color:var(--r);border-color:rgba(251,113,133,.4)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.chip.open .dot{animation:pl 1.6s infinite}@keyframes pl{50%{opacity:.25}}
+input{font:inherit;color:var(--t);background:var(--s1);border:1px solid var(--gb);border-radius:14px;padding:12px 16px;width:100%;min-height:48px;transition:border-color .2s,box-shadow .2s}
+input:focus{border-color:var(--a);box-shadow:0 0 0 4px rgba(94,234,212,.15);outline:0}
+input::placeholder{color:var(--m);opacity:.7}
+/* top bar */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,var(--v),var(--a));color:var(--onm);flex:none;font-size:17px}
+.av.lg{width:78px;height:78px;font-size:32px;margin:0 auto 10px;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 36px rgba(167,139,250,.6)}}
+.top .tt{flex:1;min-width:0}.top .tt b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--s1);border:1px solid var(--gb);position:relative;overflow:hidden;color:var(--t)}
+.ib.spin svg{animation:sp .8s linear infinite}
+/* hero */
+.hero{padding:20px;background:linear-gradient(120deg,rgba(94,234,212,.16),rgba(167,139,250,.2));background-size:220% 220%;animation:shine 9s ease-in-out infinite,rise .6s both;display:flex;gap:14px;align-items:center;margin-bottom:12px}
+@keyframes shine{50%{background-position:100% 50%}}
+.hero>div:first-child{flex:1;min-width:0}
+.ringw{position:relative;flex:none}
+.ringw svg{display:block;transform:rotate(-90deg)}
+.ringw .rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.rc b{font-size:26px;font-weight:800}.rc small{font-size:11px;color:var(--m)}
+.rt{stroke:var(--s2)}.rg{transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{padding:14px 8px;text-align:center;margin:0}
+.stat b{display:block;font-size:22px;font-weight:800;line-height:1.4}.stat span{font-size:12px;color:var(--m)}
+.bar{margin:12px 0}.bar>div{display:flex;justify-content:space-between;font-size:13px;color:var(--m)}
+.bar i{display:block;height:9px;border-radius:9px;background:var(--s2);overflow:hidden;margin-top:5px}
+.bar u{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,var(--a),var(--v));transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar u.lo{background:linear-gradient(90deg,var(--r),#f97316)}.bar u.mid{background:linear-gradient(90deg,var(--y),#f59e0b)}
+.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+.ann{border-right:3px solid var(--v)}.ann.pin{border-right-color:var(--y)}
+.ann p{color:var(--m);font-size:13.5px;white-space:pre-wrap;word-break:break-word}
+.ann small{color:var(--m);font-size:11.5px}
+.qc .meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--m);font-size:12.5px;margin:6px 0 12px}
+.qc .meta span{display:inline-flex;align-items:center;gap:5px}
+.best{font-weight:800}
+.good{color:var(--a)}.badc{color:var(--r)}.warn{color:var(--y)}
+.hist{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;width:100%;text-align:right}
+.hist .sc{min-width:56px;text-align:center;padding:2px 10px;border-radius:99px;background:var(--s2);font-weight:800}
+.hist b{font-weight:500;display:block;font-size:14px}.hist small{color:var(--m);font-size:12px}
+.empty{padding:26px 14px;text-align:center;color:var(--m);font-size:14px}
+.gi{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--s2)}.gi:last-child{border:0}
+.gi .n{flex:1;font-size:14px}.gi .badge,.badge{min-width:46px;text-align:center;padding:1px 10px;border-radius:99px;background:var(--s2);font-weight:800;font-size:14px}
+.lbr{display:flex;align-items:center;gap:10px;padding:8px 2px}.lbr .rk{width:26px;text-align:center;font-weight:800;color:var(--y)}
+/* tab bar */
+.tabs{position:fixed;z-index:10;left:0;right:0;margin:0 auto;width:min(560px,calc(100% - 20px));bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;padding:6px;border-radius:22px}
+.tabs button{flex:1;min-height:50px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:11px;color:var(--m);position:relative;transition:.25s}
+.tabs button.on{color:var(--t);background:linear-gradient(135deg,rgba(94,234,212,.22),rgba(167,139,250,.22));box-shadow:inset 0 0 0 1px var(--gb)}
+.tabs button.on svg{color:var(--a);transform:translateY(-1px) scale(1.1)}
+.tabs svg{transition:.3s}
+.off{display:none;margin-bottom:12px;padding:10px 16px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:var(--y);border-radius:16px;font-size:13px;align-items:center;gap:8px}
+.off.on{display:flex;animation:rise .4s both}
+/* login */
+.lgw{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:20px}
+.lgc{width:min(380px,100%);padding:30px 24px;display:flex;flex-direction:column;gap:12px;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+.logo{width:68px;height:68px;border-radius:22px;margin:0 auto 4px;background:linear-gradient(135deg,var(--a),var(--v));display:grid;place-items:center;animation:pulse 2.6s ease-in-out infinite}
+.err{color:var(--r);min-height:22px;text-align:center;font-size:13px}
+.shake{animation:shk .4s}@keyframes shk{25%{transform:translateX(8px)}75%{transform:translateX(-8px)}}
+.sk{height:90px;border-radius:22px;margin-bottom:12px;background:linear-gradient(90deg,var(--s1),var(--s2),var(--s1));background-size:200% 100%;animation:skl 1.3s infinite}
+@keyframes skl{to{background-position:-200% 0}}
+.tgl{width:52px;height:30px;border-radius:99px;background:var(--s2);border:1px solid var(--gb);position:relative;flex:none;transition:.3s}
+.tgl:after{content:'';position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:var(--t);transition:.3s}
+.tgl.on{background:linear-gradient(135deg,var(--a),var(--v))}.tgl.on:after{right:25px;background:#fff}
+.set{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--s2);width:100%;text-align:right}.set:last-child{border:0}
+/* quiz */
+.qh{position:sticky;top:0;z-index:5;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--card2);border-bottom:1px solid var(--gb)}
+.qh .in{max-width:560px;margin:0 auto}
+.qh .r1{display:flex;align-items:center;gap:10px}
+.qh .ttl{flex:1;min-width:0;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timer{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;padding:2px 14px;border-radius:14px;background:var(--s2);direction:ltr;transition:.3s}
+.timer.low{background:var(--bad);color:var(--r);animation:pl 1s infinite}
+.pb{height:6px;border-radius:6px;background:var(--s2);margin-top:10px;overflow:hidden}.pb u{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--v));transition:width .5s cubic-bezier(.2,.8,.2,1);border-radius:6px}
+.qb{max-width:560px;margin:0 auto;padding:16px 14px calc(110px + env(safe-area-inset-bottom,0px))}
+.qn{color:var(--m);font-size:13px;margin-bottom:6px}
+.qt{font-size:19px;font-weight:800;line-height:1.9;margin-bottom:16px;white-space:pre-wrap;word-break:break-word}
+.sl{animation:slr .38s cubic-bezier(.2,.8,.2,1) both}.sl.rv{animation-name:sll}
+@keyframes slr{from{opacity:0;transform:translateX(-36px)}}@keyframes sll{from{opacity:0;transform:translateX(36px)}}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:right;min-height:56px;padding:12px 14px;margin-bottom:10px;border-radius:18px;background:var(--s1);border:1.5px solid var(--gb);transition:.25s;position:relative;overflow:hidden}
+.opt .l{width:32px;height:32px;border-radius:10px;background:var(--s2);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none;transition:.25s}
+.opt .tx{flex:1;word-break:break-word;white-space:pre-wrap}
+.opt.sel{border-color:var(--a);background:var(--ok);transform:scale(1.01)}
+.opt.sel .l{background:linear-gradient(135deg,var(--a),var(--v));color:var(--onm)}
+.opt.ok{border-color:var(--a);background:var(--ok)}.opt.no{border-color:var(--r);background:var(--bad)}
+.opt.ok .l{background:var(--a);color:var(--onm)}.opt.no .l{background:var(--r);color:#fff}
+.opt small{font-size:11.5px;white-space:nowrap}
+.qf{position:fixed;z-index:6;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--gb)}
+.qf .in{max-width:560px;margin:0 auto}
+.dots{display:flex;gap:6px;overflow-x:auto;padding:6px 6px 10px;scrollbar-width:none}.dots::-webkit-scrollbar{display:none}
+.dots button{flex:none;width:30px;height:30px;border-radius:50%;background:var(--s2);font-size:12px;font-weight:800;transition:.25s;border:1.5px solid transparent}
+.dots button.dn{background:var(--ok);color:var(--a)}.dots button.cur{border-color:var(--v);transform:scale(1.18)}
+.qf .btns{display:flex;gap:10px}.qf .btns .bt{flex:1}
+/* result */
+.rs{text-align:center;padding:26px 18px}
+.rs .ringw{margin:6px auto 12px}.rs h1{margin-bottom:4px}
+.rv{padding:14px 16px;margin-bottom:12px}
+.rv .qt{font-size:15px;margin-bottom:10px;line-height:1.8}
+.rv .opt{min-height:46px;padding:8px 12px;margin-bottom:6px;border-radius:14px;font-size:14px;cursor:default}
+.rv .opt .l{width:26px;height:26px;border-radius:8px}
+.ex{font-size:13px;color:var(--m);padding:8px 12px;border-radius:12px;background:var(--s1);margin-top:6px;white-space:pre-wrap}
+/* modal */
+.md{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(5,8,25,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;animation:fi .25s}
+.md .glass{width:min(380px,100%);padding:22px;background:var(--card2);animation:pop .4s cubic-bezier(.2,1.2,.3,1)}
+@keyframes pop{from{opacity:0;transform:scale(.88)}}
+.md .btns{display:flex;gap:10px;margin-top:16px}.md .btns .bt{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;padding:10px 22px;border-radius:99px;background:linear-gradient(135deg,var(--a),var(--v));color:var(--onm);font-weight:800;font-size:14px;transition:.35s;z-index:60;pointer-events:none;max-width:92vw;text-align:center}
+.toast.s{transform:translate(-50%,0);opacity:1}.toast.e{background:var(--r);color:#fff}
+#cf{position:fixed;inset:0;z-index:50;pointer-events:none}
+.ver{text-align:center;color:var(--m);font-size:12px;margin-top:18px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* ===== v2 additions ===== */
+textarea{font:inherit;color:var(--t);background:var(--s1);border:1px solid var(--gb);border-radius:14px;padding:12px 16px;width:100%;min-height:90px;resize:vertical}
+textarea:focus{border-color:var(--a);box-shadow:0 0 0 4px rgba(94,234,212,.15);outline:0}
+.lgw{position:relative;overflow:hidden}
+.lgbg i{position:absolute;border-radius:50%;filter:blur(38px);opacity:.5;animation:lgf 13s ease-in-out infinite alternate;pointer-events:none}
+.lgbg i:nth-child(1){width:240px;height:240px;background:#7c3aed;top:6%;right:6%}.lgbg i:nth-child(2){width:200px;height:200px;background:#14b8a6;bottom:8%;left:4%;animation-delay:-5s}.lgbg i:nth-child(3){width:120px;height:120px;background:#ec4899;top:58%;right:34%;animation-delay:-9s}
+@keyframes lgf{to{transform:translate(44px,-54px) scale(1.25)}}
+.lgc{position:relative;z-index:1;padding:34px 26px 24px;border-radius:28px;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+.lgc>*{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}.lgc>*:nth-child(2){animation-delay:.07s}.lgc>*:nth-child(3){animation-delay:.13s}.lgc>*:nth-child(4){animation-delay:.19s}.lgc>*:nth-child(5){animation-delay:.25s}.lgc>*:nth-child(n+6){animation-delay:.31s}
+.logo{width:78px;height:78px;border-radius:25px;box-shadow:0 10px 34px rgba(167,139,250,.5);animation:lgp 3s ease-in-out infinite}
+@keyframes lgp{50%{transform:translateY(-4px) rotate(-3deg)}}
+.lgt{font-size:26px;font-weight:800;text-align:center;background:linear-gradient(90deg,var(--a),var(--v));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ff{position:relative}.ff input{padding:22px 16px 8px;min-height:58px;border-radius:16px}
+.ff label{position:absolute;right:16px;top:17px;color:var(--m);pointer-events:none;transition:.2s;font-size:14px}
+.ff input:focus+label,.ff input:not(:placeholder-shown)+label{top:6px;font-size:11.5px;color:var(--a)}
+.ff .eye{position:absolute;left:8px;top:11px;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--m)}
+.bt.main.lgx{min-height:52px;font-size:16px;border-radius:16px}
+.tb{position:absolute;top:2px;left:50%;margin-left:6px;min-width:17px;height:17px;border-radius:99px;background:var(--r);color:#fff;font-size:10px;font-style:normal;display:grid;place-items:center;padding:0 4px;animation:bnc 1.6s infinite}
+@keyframes bnc{50%{transform:scale(1.18)}}
+.ib .tb{top:-4px;left:-4px;margin:0}
+.ib.ring svg{animation:rng .7s ease-in-out}@keyframes rng{20%{transform:rotate(18deg)}40%{transform:rotate(-16deg)}60%{transform:rotate(10deg)}80%{transform:rotate(-6deg)}}
+#tab{animation:fi .35s both}
+.pq .opt.sel{animation:pop2 .3s}@keyframes pop2{50%{transform:scale(1.03)}}
+.stars{display:flex;gap:8px;justify-content:center;direction:ltr;margin:6px 0}
+.star{width:52px;height:52px;border-radius:16px;background:var(--s1);border:1.5px solid var(--gb);display:grid;place-items:center;font-size:24px;color:var(--m);transition:.2s}
+.star.on{background:linear-gradient(135deg,rgba(251,191,36,.3),rgba(251,191,36,.12));border-color:var(--y);color:var(--y);transform:translateY(-3px) scale(1.06)}
+.feed{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--s2)}.feed:last-child{border:0}
+.feed .fi{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--s2);flex:none}
+.feed.nw{background:linear-gradient(90deg,rgba(94,234,212,.12),transparent);border-radius:14px;padding-inline:10px}
+.sheet{max-height:80vh;overflow:auto;width:min(420px,100%)!important}
+.pend{display:flex;gap:12px;align-items:center;padding:14px 16px;border-right:3px solid var(--y)}
+
+.badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px}
+.bdgx{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(167,139,250,.15));border:1px solid rgba(251,191,36,.4);border-radius:99px;padding:3px 11px;font-size:16px;animation:pop2 .6s both}.bdgx small{font-size:11.5px;color:var(--t)}
+.msgs{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding:4px 2px 10px}
+.bub{max-width:82%;padding:9px 13px;border-radius:16px;font-size:14px;line-height:1.7}.bub small{display:block;font-size:10.5px;opacity:.6;margin-top:3px}
+.bub.me{align-self:flex-start;background:linear-gradient(135deg,rgba(94,234,212,.25),rgba(167,139,250,.2));border-bottom-right-radius:4px}
+.bub.th{align-self:flex-end;background:var(--s2);border-bottom-left-radius:4px}
+
+.lgcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+.lgw .lgc{overflow:visible;transition:transform .25s ease-out}
+.lgw .lgc::after{content:'';position:absolute;inset:-1.5px;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--ang),#5eead4,#a78bfa,#ec4899,#fbbf24,#5eead4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:ang 7s linear infinite;opacity:.85}
+@keyframes ang{to{--ang:360deg}}
+.lgx{background:linear-gradient(110deg,var(--a),var(--v) 40%,#ec4899 60%,var(--a))!important;background-size:250% 100%;animation:shim 5s linear infinite;color:#0a0e2a!important;box-shadow:0 10px 30px -8px rgba(167,139,250,.7)}
+@keyframes shim{to{background-position:-250% 0}}
+.shake{animation:shk .4s}@keyframes shk{25%{transform:translateX(9px)}75%{transform:translateX(-9px)}}
+.lgt{font-size:30px}.logo{box-shadow:0 0 0 6px rgba(167,139,250,.12),0 0 0 14px rgba(94,234,212,.07),0 12px 40px rgba(167,139,250,.55)}
+.glass{backdrop-filter:blur(20px) saturate(1.35);-webkit-backdrop-filter:blur(20px) saturate(1.35)}
+@media(prefers-reduced-motion:reduce){.lgw .lgc::after,.lgx{animation:none}}
+</style>
+<link rel="stylesheet" href="/assets/themes.css?v=9">
+<link rel="stylesheet" href="/assets/pro.css?v=9">
+<link rel="stylesheet" href="/assets/login.css?v=9">
+<script src="/assets/themes.js?v=9"></script>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<section class="view" id="v-login"><div class="lgw"><div class="glass lgc">
+  <div class="lgbrand" aria-hidden="true"><div class="bmark"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></svg></div><h2>اپ دانش‌آموز</h2><p>نمره‌ها، آزمون‌ها و تکلیف‌هات همیشه همراهت.</p><ul><li><i></i>آزمون آنلاین (تستی و تشریحی)</li><li><i></i>نمره‌ها، رتبه و حضور و غیاب</li><li><i></i>تحویل تکلیف و پیام به استاد</li><li><i></i>اعلان لحظه‌ای اطلاعیه‌ها</li></ul><div class="bfoot">طراحی و توسعه: امیرعلی ساقی · ۲۰۲۶</div></div><div class="lgform">
+  <div class="logo"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0a0e2a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></svg></div>
+  <b class="lgt" data-greet="خوش آمدی 👋">سلام، خوش آمدی 👋</b>
+  <small class="sub" style="text-align:center;margin-top:-6px;transition:opacity .35s" id="lgSub" data-phr="با نام کاربری و رمزی که استاد داده وارد شو|کوییز بده، نمره‌هات را ببین|تکلیف تحویل بده و نظرت را بگو">با نام کاربری و رمزی که استاد داده وارد شو</small>
+  <label class="fx"><span>نام کاربری</span><div class="fxw"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg><input id="lid" placeholder="نام کاربری که استاد داده" aria-label="نام کاربری" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr"></div></label>
+  <label class="fx"><span>رمز</span><div class="fxw"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="lcode" type="password" placeholder="رمز" aria-label="رمز" autocomplete="current-password" dir="ltr"><button type="button" class="eye" id="leye" aria-label="نمایش رمز"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div></label>
+  <div class="lgerr" id="lerr" role="alert"></div>
+  <button class="bt main full lgx" id="lbtn">ورود</button>
+  <div class="lgth" aria-label="تم"></div>
+  <button class="bt full" id="lsrv" style="display:none;background:none;border:0;color:var(--m);min-height:36px">تغییر آدرس سرور</button>
+  <div class="lgsep" id="lbsep">یا</div>
+  <a class="lglink" id="lback" href="/"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>بازگشت به ورود استاد</a>
+  <div class="credit">طراحی و توسعه توسط <b>امیرعلی ساقی</b> · ۲۰۲۶</div>
+</div></div></div></section>
+
+<section class="view" id="v-main"><div class="wrap">
+  <div class="top"><span class="av" id="mAv"></span><div class="tt"><b id="mName"></b><span class="sub" id="mDate"></span></div>
+    <button class="ib" id="bell" aria-label="اعلان‌ها"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg><i class="tb" id="bellN" style="display:none"></i></button><button class="ib" id="rfBtn" aria-label="بازخوانی"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div>
+  <div class="off" id="offB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg>آفلاین؛ آخرین اطلاعات ذخیره‌شده نمایش داده می‌شود</div>
+  <div id="tab"></div>
+</div>
+<nav class="glass tabs" id="tabs"></nav></section>
+
+<section class="view" id="v-quiz">
+  <div class="qh"><div class="in"><div class="r1"><button class="ib" id="qx" aria-label="خروج"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><span class="ttl" id="qTitle"></span><span class="timer" id="qTimer">۰۰:۰۰</span></div><div class="pb"><u id="qPb"></u></div></div></div>
+  <div class="qb"><div id="qBody"></div></div>
+  <div class="qf"><div class="in"><div class="dots" id="qDots"></div><div class="btns"><button class="bt" id="qPrev">قبلی</button><button class="bt main" id="qNext">بعدی</button></div></div></div>
+</section>
+
+<section class="view" id="v-result"><div class="wrap" id="rBody" style="padding-bottom:40px"></div></section>
+
+<div id="mdw"></div><div class="toast" id="toast"></div><canvas id="cf"></canvas>
+
+<script src="/assets/loginfx.js?v=9"></script>
+<script>
+'use strict';
+const VER='4.0.0',PASS=10,$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RED=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const mem={};
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);return}catch(e){}if(v===undefined)return mem[k]===undefined?null:mem[k];if(v===null)delete mem[k];else mem[k]=v}
+const fa=(n,o)=>Number(n).toLocaleString('fa-IR',o||{});
+const fmt=x=>x==null?'—':fa(Math.round(x*100)/100,{maximumFractionDigits:2});
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dfmt=(ms,t)=>new Date(ms).toLocaleString('fa-IR-u-ca-persian',t?{month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}:{month:'long',day:'numeric'});
+const lvl=x=>x==null?'':x<10?'lo':x<14?'mid':'';
+const LET=['الف','ب','ج','د','ه','و'];
+const IC=d=>'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
+const ICO={home:IC('<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>'),quiz:IC('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>'),po:IC('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/><path d="M4 6l4-3 4 2 4-3"/>'),gr:IC('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),me:IC('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/>')};
+const sm=(d,s)=>'<svg width="'+(s||14)+'" height="'+(s||14)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
+const IQ=sm('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),IN=sm('<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>'),IR=sm('<path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/>'),IP=sm('<path d="M12 17v5M8 3h8l-1 7 3 3H6l3-3z"/>');
+
+let TOKEN='',HOME=null,OFFLINE=false,TAB='home',QZ=null,DEF=null,lastHomeAt=0,ringN=0;
+const A=()=>window.Android;
+function andr(fn,a){try{if(A()&&typeof A()[fn]==='function')return A()[fn](a)}catch(e){}}
+const isApp=()=>!!A();
+
+/* theme */
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);if(window.syncBars)syncBars()}
+function curTheme(){return ls('theme')||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')}
+applyTheme(curTheme());
+
+/* ui helpers */
+function toast(t,err){const e=$('#toast');e.textContent=t;e.className='toast s'+(err?' e':'');clearTimeout(toast.h);toast.h=setTimeout(()=>e.className='toast'+(err?' e':''),2200)}
+function box(o){return new Promise(res=>{const w=$('#mdw');w.innerHTML='<div class="md"><div class="glass" role="dialog" aria-modal="true"><h3 style="margin-bottom:8px;font-size:17px">'+esc(o.title)+'</h3><div class="sub" style="font-size:14px;line-height:1.9">'+(o.html||esc(o.body||''))+'</div><div class="btns">'+(o.cancel===false?'':'<button class="bt" data-v="0">'+esc(o.cancel||'انصراف')+'</button>')+'<button class="bt main" data-v="1">'+esc(o.ok||'تأیید')+'</button></div></div></div>';
+  const d=v=>{w.innerHTML='';res(v)};w.querySelectorAll('button').forEach(b=>b.onclick=()=>d(b.dataset.v==='1'));w.firstChild.onclick=e=>{if(e.target===w.firstChild&&o.cancel!==false)d(false)}})}
+function show(v){if(v==='login'&&window.LGFX)LGFX.reset();['login','main','quiz','result'].forEach(n=>$('#v-'+n).classList.toggle('on',n===v));window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.bt,.ib');if(!b)return;const r=b.getBoundingClientRect(),p=document.createElement('span');p.className='rp';p.style.left=(e.clientX-r.left)+'px';p.style.top=(e.clientY-r.top)+'px';b.appendChild(p);setTimeout(()=>p.remove(),600)});
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')}});
+function anim(root){root=root||document;
+  root.querySelectorAll('.card,.hero,.hist,.stat').forEach((e,i)=>{if(e.classList.contains('hero'))return;e.style.animationDelay=Math.min(i*45,600)+'ms';e.classList.add('rise')});
+  root.querySelectorAll('.bar u').forEach(u=>{const w=u.dataset.w;setTimeout(()=>u.style.width=w+'%',RED?0:150)});
+  root.querySelectorAll('.rg').forEach(c=>{const o=c.dataset.o;setTimeout(()=>c.style.strokeDashoffset=o,RED?0:150)});
+  root.querySelectorAll('[data-count]').forEach(b=>{const n=parseFloat(b.dataset.count),dec=+b.dataset.dec||0,suf=b.dataset.suf||'',f=x=>fa(x,{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf;if(RED||isNaN(n)){b.textContent=f(n);return}const s=performance.now();(function st(now){const p=Math.min(1,(now-s)/1000),e=1-Math.pow(1-p,3);b.textContent=f(n*e);if(p<1)requestAnimationFrame(st)})(s)})}
+function ring(p,size,center,sub,bw){ringN++;const r=52,C=2*Math.PI*r,pp=Math.max(0,Math.min(100,p||0)),id='rg'+ringN;
+  return '<div class="ringw" style="width:'+size+'px;height:'+size+'px"><svg width="'+size+'" height="'+size+'" viewBox="0 0 140 140"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><circle class="rt" r="'+r+'" cx="70" cy="70" fill="none" stroke-width="'+(bw||14)+'"/><circle class="rg" r="'+r+'" cx="70" cy="70" fill="none" stroke="url(#'+id+')" stroke-width="'+(bw||14)+'" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+C.toFixed(1)+'" data-o="'+(C*(1-pp/100)).toFixed(1)+'"/></svg><div class="rc">'+center+(sub?'<small>'+sub+'</small>':'')+'</div></div>'}
+function cnt(v,dec,suf){return v==null?'<b>—</b>':'<b data-count="'+v+'" data-dec="'+(dec||0)+'" data-suf="'+(suf||'')+'">'+fmt(v)+(suf||'')+'</b>'}
+
+/* api */
+async function api(path,body){const h={'Content-Type':'application/json'};if(TOKEN)h.Authorization='Bearer '+TOKEN;let r;
+  try{r=await fetch(path,{method:body?'POST':'GET',headers:h,body:body?JSON.stringify(body):undefined,cache:'no-store'})}catch(e){return{status:0,data:{error:'offline'}}}
+  let d={};try{d=await r.json()}catch(e){}
+  if(r.status===401&&TOKEN)logout(true);return{status:r.status,data:d}}
+function logout(expired){TOKEN='';HOME=null;ls('tok',null);ls('home',null);cleanupQuiz();clearInterval(refT);show('login');$('#lcode').value='';$('#lid').value=ls('sid')||'';if(expired)toast('نشست تمام شد؛ دوباره وارد شوید',1)}
+
+/* images: profile photo + exam photos */
+function shrinkImg(file,px,sq,q){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);
+  img.onload=()=>{let sw=img.width,sh=img.height,sx=0,sy=0,dw,dh;
+    if(sq){const m=Math.min(sw,sh);sx=(sw-m)/2;sy=(sh-m)/2;sw=sh=m;dw=dh=Math.min(px,m)}else{const k=Math.min(1,px/Math.max(sw,sh));dw=Math.round(sw*k);dh=Math.round(sh*k)}
+    const c=document.createElement('canvas');c.width=dw;c.height=dh;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,dw,dh);x.drawImage(img,sx,sy,sw,sh,0,0,dw,dh);
+    URL.revokeObjectURL(u);let o=c.toDataURL('image/jpeg',q||.85);if(!sq&&o.length>1300000)o=c.toDataURL('image/jpeg',.6);res(o)};
+  img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('bad'))};img.src=u})}
+function pickFile(cb){const i=document.createElement('input');i.type='file';i.accept='image/*';i.style.cssText='position:fixed;left:-9999px;top:0;opacity:0;width:1px;height:1px';document.body.appendChild(i);i.onchange=()=>{if(i.files&&i.files[0])cb(i.files[0]);setTimeout(()=>i.remove(),2000)};i.addEventListener('cancel',()=>i.remove());i.click();setTimeout(()=>i.remove(),900000)}
+let AVU=null;
+async function authBlob(path){try{const r=await fetch(path,{headers:{Authorization:'Bearer '+TOKEN},cache:'force-cache'});if(!r.ok)return null;return URL.createObjectURL(await r.blob())}catch(e){return null}}
+function paintAv(){const set=u=>{['#mAv','#avBig'].forEach(q=>{const e=$(q);if(!e)return;if(u){e.style.backgroundImage='url('+u+')';e.style.backgroundSize='cover';e.style.backgroundPosition='center';e.style.color='transparent'}else{e.style.backgroundImage='';e.style.color=''}})};
+  if(!HOME||!HOME.av){AVU=null;set(null);return}
+  if(AVU&&AVU.v===HOME.av){set(AVU.u);return}
+  const v=HOME.av;authBlob('/api/student/avatar?v='+v).then(u=>{if(u&&HOME&&HOME.av===v){AVU={v:v,u:u};set(u)}})}
+function pickAvatar(){pickFile(async f=>{try{const img=await shrinkImg(f,256,true,.85),r=await api('/api/student/avatar',{img});
+  if(r.status===200){toast('عکس پروفایل ذخیره شد ✅');AVU=null;await loadHome(true)}else if(r.status!==401)toast('ذخیره نشد؛ عکس دیگری امتحان کن',1)}catch(e){toast('این فایل عکس معتبر نیست',1)}})}
+
+/* login */
+function shakeL(){const c=$('.lgc');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+async function doLogin(){const id=$('#lid').value.trim(),code=$('#lcode').value.trim(),e=$('#lerr'),b=$('#lbtn');if(b.disabled)return;e.textContent='';audio();
+  const bad=m=>{if(window.LGFX)LGFX.fail(m);else{e.textContent=m;shakeL()}};
+  if(!id||!code){bad(!id?'نام کاربری را وارد کن.':'رمز را وارد کن.');(!id?$('#lid'):$('#lcode')).focus();return}
+  b.classList.add('busy');b.disabled=true;const r=await api('/api/student/login',{user:id,pass:code,platform:isApp()?'android':'web'});b.classList.remove('busy');b.disabled=false;
+  if(r.status===200&&r.data.token){TOKEN=r.data.token;ls('tok',TOKEN);ls('sid',id);$('#lcode').value='';$('#lcode').type='password';const fx=window.LGFX?LGFX.success():null;await loadHome();if(fx)await fx;show('main');chime('ok');return}
+  bad(r.status===429?'تلاش‌های زیاد؛ ۱۵ دقیقه بعد دوباره تلاش کن.':r.status===403?'حساب تو توسط استاد غیرفعال شده است.':r.status===0?'ارتباط با سرور برقرار نشد؛ اینترنت را بررسی کن.':'نام کاربری یا رمز درست نیست.')}
+$('#lbtn').onclick=doLogin;$('#lcode').onkeydown=e=>{if(e.key==='Enter')doLogin()};$('#lid').onkeydown=e=>{if(e.key==='Enter')$('#lcode').focus()};
+$('#leye').onclick=()=>{const i=$('#lcode'),sh=i.type==='password';i.type=sh?'text':'password';$('#leye').classList.toggle('on',sh);$('#leye').setAttribute('aria-label',sh?'پنهان کردن رمز':'نمایش رمز')};
+if(isApp()){['#lback','#lbsep'].forEach(x=>{const e=$(x);if(e)e.style.display='none'})}
+
+/* sound + notifications */
+let AUD=null;
+function audio(){try{AUD=AUD||new(window.AudioContext||window.webkitAudioContext)();if(AUD.state==='suspended')AUD.resume()}catch(e){}return AUD}
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>audio(),{once:true,passive:true}));
+function chime(k){if(ls('snd')==='0')return;const ac=audio();if(!ac)return;const seq=k==='ok'?[660,880,1175]:k==='warn'?[440,330]:[784,988];
+  try{const t0=ac.currentTime;seq.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain(),st=t0+i*.13;o.type='sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.0001,st);g.gain.exponentialRampToValueAtTime(.2,st+.02);g.gain.exponentialRampToValueAtTime(.0001,st+.45);o.start(st);o.stop(st+.5)})}catch(e){}}
+const feedKey=()=>'feed_'+(HOME&&HOME.id);
+function getFeed(){try{return JSON.parse(ls(feedKey())||'[]')}catch(e){return[]}}
+function setFeed(f){ls(feedKey(),JSON.stringify(f.slice(0,60)))}
+window.pickAcc=k=>{applyAcc(k);renderMain(true)};
+function badgeUpd(){const n=getFeed().filter(x=>!x.r).length,b=$('#bellN');if(b){b.textContent=n?fa(Math.min(99,n)):'';b.style.display=n?'':'none'}}
+function nativeNotify(t,b){try{if(A()&&typeof A().notify==='function'){A().notify(t,b);return}}catch(e){}
+  try{if(document.hidden&&window.Notification&&Notification.permission==='granted')new Notification(t,{body:b,icon:'/icons/icon-192.png'})}catch(e){}}
+function feedCheck(h){
+  const k='seen_'+h.id;let seen=null;try{seen=JSON.parse(ls(k))}catch(e){}
+  const cur={ann:(h.ann||[]).map(a=>a.id),qz:(h.quizzes||[]).filter(q=>q.status==='open').map(q=>q.id),po:(h.polls||[]).filter(p=>p.status==='open'&&!p.done).map(p=>p.id),gr:(h.grades||[]).map(g=>g.cat+'|'+g.title),hw:(h.hw||[]).map(x=>x.id),bd:h.badges||[],ms:(h.msgs||[]).filter(m=>m.from==='t').map(m=>m.id)};
+  const un=o=>{const r={};Object.keys(cur).forEach(x=>{r[x]=[...new Set(((o||{})[x]||[]).concat(cur[x]))]});return r};
+  if(!seen){ls(k,JSON.stringify(un(null)));return}
+  const has=(x,v)=>(seen[x]||[]).includes(v),nf=[];
+  (h.ann||[]).forEach(a=>{if(!has('ann',a.id))nf.push({k:'ann',t:'اطلاعیه‌ی جدید',b:a.t})});
+  (h.quizzes||[]).forEach(q=>{if(q.status==='open'&&!has('qz',q.id))nf.push({k:'qz',t:'کوییز جدید',b:q.t})});
+  (h.polls||[]).forEach(p=>{if(p.status==='open'&&!p.done&&!has('po',p.id))nf.push({k:'po',t:'نظرسنجی جدید',b:p.t})});
+  (h.grades||[]).forEach(g=>{if(!has('gr',g.cat+'|'+g.title))nf.push({k:'gr',t:'نمره‌ی جدید',b:g.title+': '+fmt(g.sc)})});
+  (h.hw||[]).forEach(x=>{if(!has('hw',x.id))nf.push({k:'hw',t:'تکلیف جدید',b:x.t})});
+  (h.badges||[]).forEach(x=>{if(!has('bd',x)){const b=BADGES[x];if(b)nf.push({k:'bd',t:'نشان جدید گرفتی! '+b[0],b:b[1]})}});
+  (h.msgs||[]).forEach(m=>{if(m.from==='t'&&!has('ms',m.id))nf.push({k:'ms',t:'پیام از استاد',b:m.x.slice(0,80)})});
+  ls(k,JSON.stringify(un(seen)));
+  if(!nf.length)return;
+  const ts=Date.now();setFeed(nf.map(x=>Object.assign({ts:ts,r:0},x)).concat(getFeed()));
+  nf.slice(0,2).forEach((x,i)=>setTimeout(()=>toast(x.t+': '+x.b),i*900));
+  chime('info');nativeNotify(nf[0].t+(nf.length>1?' (+'+(nf.length-1)+' مورد دیگر)':''),nf[0].b);
+  const bl=$('#bell');if(bl){bl.classList.remove('ring');void bl.offsetWidth;bl.classList.add('ring')}
+  badgeUpd()}
+const FI={hw:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 14l2 2 4-4"/>',bd:'<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 9.6l6.2-.9z"/>',ms:'<path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-5.5A8 8 0 1 1 21 12z"/>',ann:'<path d="M4 11v2a1 1 0 0 0 1 1h2l5 4V6L7 10H5a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6"/>',qz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',po:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',gr:'<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 9.6l6.2-.9z"/>'};
+function openFeed(){const f=getFeed(),w=$('#mdw');
+  w.innerHTML='<div class="md"><div class="glass sheet" role="dialog" aria-modal="true"><div class="row" style="margin-bottom:6px"><h3 class="sp" style="font-size:17px">اعلان‌ها</h3><button class="bt" id="fcl" style="min-height:36px;padding:4px 14px">بستن</button></div>'+(f.length?f.map(x=>'<div class="feed'+(x.r?'':' nw')+'"><span class="fi" style="color:var(--a)">'+IC(FI[x.k]||FI.ann)+'</span><span class="sp"><b style="font-weight:500;display:block">'+esc(x.t)+'</b><small class="sub">'+esc(x.b)+' · '+dfmt(x.ts,1)+'</small></span></div>').join(''):'<div class="empty">هنوز اعلانی نداری.</div>')+'</div></div>';
+  const c=()=>{w.innerHTML=''};$('#fcl').onclick=c;w.firstChild.onclick=e=>{if(e.target===w.firstChild)c()};
+  setFeed(f.map(x=>Object.assign(x,{r:1})));badgeUpd()}
+
+/* home */
+let refT;
+async function loadHome(silent){
+  if(!silent&&!HOME){$('#tab').innerHTML='<div class="sk"></div><div class="sk"></div><div class="sk" style="height:140px"></div>'}
+  const r=await api('/api/student/home');
+  if(r.status===200){HOME=r.data;OFFLINE=false;lastHomeAt=Date.now();ls('home',JSON.stringify(r.data));try{feedCheck(r.data)}catch(e){}}
+  else if(r.status===0){OFFLINE=true;if(!HOME){try{HOME=JSON.parse(ls('home'))}catch(e){}}if(!HOME){toast('اتصال برقرار نیست',1);return false}}
+  else if(r.status===401)return false;
+  else{toast('خطا در دریافت اطلاعات',1);if(!HOME)return false}
+  renderMain(silent);return true}
+function renderMain(keepScroll){
+  const h=HOME;$('#mAv').textContent=(h.name||'؟').trim()[0]||'؟';$('#mName').textContent=h.name;
+  $('#mDate').textContent=new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long'});
+  $('#offB').classList.toggle('on',OFFLINE);
+  $('#tabs').innerHTML=[['home','خانه'],['quiz','کوییزها'],['po','فعالیت‌ها'],['gr','نمرات من'],['me','پروفایل']].filter(t=>true).map(t=>'<button class="'+(t[0]===TAB?'on':'')+'" data-t="'+t[0]+'">'+ICO[t[0]]+t[1]+(t[0]==='po'&&pendAll()?'<i class="tb">'+fa(pendAll())+'</i>':'')+'</button>').join('');
+  $$('#tabs button').forEach(b=>b.onclick=()=>{if(TAB!==b.dataset.t){TAB=b.dataset.t;renderMain();window.scrollTo(0,0)}});
+  const y=window.scrollY;$('#tab').innerHTML=({home:tHome,quiz:tQuiz,po:tPoll,gr:tGr,me:tMe})[TAB]()+'<div class="credit">طراحی و توسعه توسط <b>امیرعلی ساقی</b> · ۲۰۲۶</div>';anim($('#tab'));bindTab();paintAv();if(keepScroll)window.scrollTo(0,y)}
+function bindTab(){
+  $$('[data-poll]').forEach(b=>b.onclick=()=>openPoll(+b.dataset.poll));
+  $$('[data-hw]').forEach(b=>b.onclick=()=>openHw(+b.dataset.hw));
+  $$('[data-msg]').forEach(b=>b.onclick=openMsg);
+  const snd=$('#snd-r');if(snd)snd.onclick=()=>{const on=ls('snd')==='0';ls('snd',on?'1':'0');$('#snd').classList.toggle('on',on);if(on)chime('ok')};
+  $$('[data-start]').forEach(b=>b.onclick=()=>startQuiz(+b.dataset.start,b));
+  $$('[data-att]').forEach(b=>b.onclick=()=>openAttempt(+b.dataset.att));
+  $$('[data-go]').forEach(b=>b.onclick=()=>{TAB=b.dataset.go;renderMain();window.scrollTo(0,0)});
+  const t=$('#thm-r');if(t)t.onclick=()=>{const n=curTheme()==='light'?'dark':'light';ls('theme',n);applyTheme(n);$('#thm').classList.toggle('on',n==='light')};
+  const ap=$('#avPick');if(ap){ap.onclick=pickAvatar;ap.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickAvatar()}}}
+  const lo=$('#lout');if(lo)lo.onclick=async()=>{if(await box({title:'خروج از حساب',body:'آیا می‌خواهید از حساب خود خارج شوید؟',ok:'بله، خارج شو',cancel:'نه، بمان'}))logout()};
+  const nt=$('#ntf');if(nt)nt.onclick=async()=>{await Notification.requestPermission();renderMain(true)};
+  const cs=$('#csrv');if(cs)cs.onclick=()=>andr('changeServer');
+  const ins=$('#inst');if(ins)ins.onclick=async()=>{if(!DEF)return;DEF.prompt();await DEF.userChoice;DEF=null;renderMain()}}
+function qcard(q){
+  let btn,note='';const full=q.at>0&&q.used>=q.at;
+  if(q.status==='soon'){btn='<button class="bt full" disabled>به‌زودی</button>';if(q.from)note='شروع: '+dfmt(q.from,1)}
+  else if(q.status==='closed'){btn='<button class="bt full" disabled>بسته شده</button>';if(q.to)note='پایان: '+dfmt(q.to,1)}
+  else if(q.running)btn='<button class="bt main full" data-start="'+q.id+'"'+(OFFLINE?' disabled':'')+'>ادامه‌ی آزمون</button>';
+  else if(full)btn='<button class="bt full" disabled>تکمیل شده</button>';
+  else btn='<button class="bt main full" data-start="'+q.id+'"'+(OFFLINE?' disabled':'')+'>'+(q.used>0?'آزمون مجدد':'شروع آزمون')+'</button>';
+  if(q.status==='open'&&q.to)note='تا '+dfmt(q.to,1);
+  const lab={open:'باز',soon:'به‌زودی',closed:'بسته'}[q.status]||'';
+  return '<div class="glass card qc"><div class="row"><h3 class="sp">'+esc(q.t)+'</h3><span class="chip '+esc(q.status)+'"><i class="dot"></i>'+lab+'</span></div>'+(q.d?'<p class="sub" style="margin-top:4px">'+esc(q.d)+'</p>':'')+
+  '<div class="meta"><span>'+IN+fa(q.n)+' سؤال</span><span>'+IQ+fa(q.m)+' دقیقه</span><span>'+IR+fa(q.used)+(q.at>0?' از '+fa(q.at):'')+' تلاش</span>'+(q.best!=null?'<span class="best '+(q.best>=PASS?'good':'badc')+'">'+IP+'بهترین: '+fmt(q.best)+' از ۲۰</span>':'')+(note?'<span>'+esc(note)+'</span>':'')+'</div>'+btn+'</div>'}
+function tHome(){const h=HOME,m=h.me||{},ql=h.quizzes||[],gr=(h.cfg||{}).showGrades;
+  const hr=new Date().getHours(),g=hr<12?'صبح بخیر':hr<18?'ظهر بخیر':'عصر بخیر',first=(h.name||'').split(' ')[0];
+  const act=ql.filter(q=>q.status==='open'&&!(q.at>0&&q.used>=q.at&&!q.running));
+  const ring1=ring(m.avg!=null?m.avg*5:0,118,cnt(m.avg,1),'از ۲۰');
+  let s='<div class="glass hero"><div><h1>'+g+'، '+esc(first)+'</h1><p class="sub">'+esc((h.cfg||{}).cls||'')+(h.cfg&&h.cfg.school?' · '+esc(h.cfg.school):'')+'</p>'+(act.length?'<p style="margin-top:8px;font-size:13px" class="good">'+fa(act.length)+' کوییز باز منتظر توست</p>':'<p class="sub" style="margin-top:8px">کوییز بازی وجود ندارد.</p>')+'</div>'+(gr?ring1:'')+'</div>';
+  s+='<div class="stats"><div class="glass card stat">'+cnt(m.att&&m.att.pct,0,'٪')+'<span>حضور</span></div><div class="glass card stat">'+cnt(m.pts||0,0)+'<span>امتیاز</span></div><div class="glass card stat">'+(m.rank?'<b>'+fa(m.rank)+'</b><span>رتبه از '+fa(m.count||0)+'</span>':'<b>—</b><span>رتبه</span>')+'</div></div>';
+  const pp=pendPolls();if(pp.length)s+='<div class="glass card pend"><span class="sp"><b>'+fa(pp.length)+' نظرسنجی منتظر نظر توست</b><br><small class="sub">'+esc(pp[0].t)+'</small></span><button class="bt main" data-go="po">شرکت</button></div>';
+  const td=(new Date().getDay()+1)%7,tds=(h.sched||[]).filter(x=>x.day===td).sort((a,b)=>String(a.time).localeCompare(b.time));
+  if(tds.length)s+='<div class="glass card"><h3 style="margin-bottom:8px">برنامه‌ی امروز</h3>'+tds.map(x=>'<div class="row" style="padding:6px 0"><span class="chip" style="min-width:64px;justify-content:center">'+fa(x.time||'—',{useGrouping:false})+'</span><span class="sp">'+esc(x.t)+'</span></div>').join('')+'</div>';
+  const ph=pendHw();if(ph.length)s+='<div class="glass card pend" style="border-right-color:var(--b)"><span class="sp"><b>'+fa(ph.length)+' تکلیف تحویل‌نشده</b><br><small class="sub">'+esc(ph[0].t)+(ph[0].due?' · مهلت: '+dfmt(ph[0].due,1):'')+'</small></span><button class="bt main" data-go="po">دیدن</button></div>';
+  s+='<button class="bt full" data-msg="1" style="margin:2px 0 12px">✉️ پیام به استاد'+(unreadMsgs()?' ('+fa(unreadMsgs())+' جدید)':'')+'</button>';
+  const an=(h.ann||[]).slice(0,6);
+  if(an.length)s+='<h2>اطلاعیه‌ها</h2>'+an.map(a=>'<div class="glass card ann'+(a.pin?' pin':'')+'"><div class="row"><h3 class="sp">'+esc(a.t)+'</h3>'+(a.pin?'<span class="warn">'+IP+'</span>':'')+'</div><p>'+esc(a.b)+'</p><small>'+dfmt(a.d)+'</small></div>').join('');
+  s+='<h2>کوییزها'+(ql.length>3?'<small><a href="#" data-go="quiz" style="color:var(--a);text-decoration:none">همه</a></small>':'')+'</h2>';
+  const sh=(act.length?act:ql).slice(0,3);
+  s+=sh.length?sh.map(qcard).join(''):'<div class="glass empty">هنوز کوییزی منتشر نشده است.</div>';
+  return s}
+function tQuiz(){const h=HOME,ql=h.quizzes||[],at=h.attempts||[];
+  let s='<h1 style="margin-bottom:4px">کوییزها</h1><p class="sub" style="margin-bottom:12px">با شروع آزمون، زمان‌سنج فعال می‌شود.</p>'+(ql.length?ql.map(qcard).join(''):'<div class="glass empty">هنوز کوییزی منتشر نشده است.</div>');
+  s+='<h2>تاریخچه‌ی آزمون‌ها</h2>'+(at.length?at.map(a=>'<button class="glass hist" data-att="'+a.id+'"><span class="sc '+(a.sc>=PASS?'good':'badc')+'">'+fmt(a.sc)+'</span><span class="sp"><b>'+esc(a.title)+'</b><small>'+dfmt(a.en,1)+' · '+fa(a.c)+' از '+fa(a.t)+(a.exp?' · زمان تمام شد':'')+'</small></span>'+sm('<path d="M15 6l-6 6 6 6"/>',18)+'</button>').join(''):'<div class="glass empty">هنوز آزمونی نداده‌اید.</div>');
+  return s}
+function tGr(){const h=HOME,m=h.me||{},c=h.cfg||{};let s='<h1 style="margin-bottom:12px">نمرات من</h1>';
+  if(c.showGrades){
+    s+='<div class="glass card row" style="gap:16px">'+ring(m.final!=null?m.final*5:0,104,cnt(m.final,1),'نمره‌ی نهایی',12)+'<div class="sp"><h3>میانگین دروس</h3><p class="sub">میانگین کل: '+fmt(m.avg)+' از ۲۰</p><p class="sub">حضور: '+(m.att&&m.att.pct!=null?fa(m.att.pct)+'٪':'—')+'</p></div></div>';
+    const cats=m.cats||[];if(cats.length)s+='<div class="glass card"><h3>میانگین هر بخش</h3>'+cats.map(k=>'<div class="bar"><div><span>'+esc(k.name)+'</span><span>'+fmt(k.avg)+'</span></div><i><u class="'+lvl(k.avg)+'" data-w="'+(k.avg?Math.min(100,k.avg*5):0)+'"></u></i></div>').join('')+'</div>';
+    const gs=h.grades||[];if(gs.length){const by={};gs.forEach(x=>{(by[x.catName]=by[x.catName]||[]).push(x)});s+=Object.keys(by).map(k=>'<h2>'+esc(k)+'</h2><div class="glass card">'+by[k].map(x=>'<div class="gi"><span class="n">'+esc(x.title)+'</span><span class="badge '+(x.sc>=PASS?'good':'badc')+'">'+fmt(x.sc)+'</span></div>').join('')+'</div>').join('')}else s+='<div class="glass empty">هنوز نمره‌ای ثبت نشده است.</div>'}
+  else s+='<div class="glass card"><p class="sub">نمایش نمره‌ها توسط استاد فعال نشده است.</p><div class="bar"><div><span>حضور</span><span>'+(m.att&&m.att.pct!=null?fa(m.att.pct)+'٪':'—')+'</span></div><i><u data-w="'+(m.att&&m.att.pct||0)+'"></u></i></div></div>';
+  if(c.board&&(h.board||[]).length)s+='<h2>برترین‌ها (امتیاز)</h2><div class="glass card">'+h.board.map((b,i)=>'<div class="lbr"><span class="rk">'+fa(i+1)+'</span><span class="av" style="width:34px;height:34px;font-size:14px">'+esc((b.n||'؟')[0])+'</span><span class="sp">'+esc(b.n)+'</span><span class="badge good">'+fa(b.pts)+'</span></div>').join('')+'</div>';
+  return s}
+function tMe(){const h=HOME,c=h.cfg||{};
+  let s='<div class="glass card" style="text-align:center;padding:24px"><div class="avedit" id="avPick" role="button" tabindex="0" aria-label="تغییر عکس پروفایل"><div class="av lg" id="avBig">'+esc((h.name||'؟').trim()[0])+'</div><span class="cam">'+sm('<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',15)+'</span></div><h1 style="font-size:21px">'+esc(h.name)+'</h1><p class="sub" dir="ltr">@'+esc(h.user||'')+'</p>'+badgeRow(h.badges)+'<p class="sub">'+esc(c.cls||'')+(c.teacher?' · '+esc(c.teacher):'')+'</p></div>';
+  s+='<div class="glass card"><button class="set" id="thm-r"><span class="sp">'+sm('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',20)+' &nbsp;حالت روشن</span><span class="tgl'+(curTheme()==='light'?' on':'')+'" id="thm" role="switch" aria-label="حالت روشن" tabindex="0"></span></button>';
+  s+='<div style="padding:12px 0;border-bottom:1px solid var(--s2)"><b>تم رنگی</b><div class="accs">'+accSwatches('pickAcc')+'</div></div>';
+  s+='<button class="set" data-msg="1"><span class="sp">'+sm('<path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-5.5A8 8 0 1 1 21 12z"/>',20)+' &nbsp;پیام به استاد</span></button>';
+  s+='<button class="set" id="snd-r"><span class="sp">'+sm('<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/>',20)+' &nbsp;صدای اعلان</span><span class="tgl'+(ls('snd')!=='0'?' on':'')+'" id="snd" role="switch" aria-label="صدای اعلان"></span></button>';
+  if(window.Notification&&!isApp()&&Notification.permission==='default')s+='<button class="set" id="ntf"><span class="sp">'+sm('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/>',20)+' &nbsp;فعال‌کردن اعلان روی گوشی</span></button>';
+  if(isApp()&&A()&&typeof A().changeServer==='function')s+='<button class="set" id="csrv"><span class="sp">'+sm('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',20)+' &nbsp;تغییر آدرس سرور</span></button>';
+  if(DEF&&!isApp())s+='<button class="set" id="inst"><span class="sp">'+sm('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',20)+' &nbsp;نصب روی صفحه‌ی اصلی</span></button>';
+  s+='<button class="set" id="lout" style="color:var(--r)"><span class="sp">'+sm('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',20)+' &nbsp;خروج از حساب</span></button></div><p class="ver">نسخه‌ی '+fa(VER)+(isApp()?' · اپ اندروید':'')+'</p>';
+  return s}
+
+/* homework, messages, badges */
+const BADGES={star:['⭐','پرتلاش'],target:['🎯','دقیق'],team:['🤝','همکار'],rocket:['🚀','پیشرفت چشمگیر'],bulb:['💡','خلاق'],trophy:['🏆','برتر کلاس']};
+const badgeRow=b=>(b&&b.length)?'<div class="badges">'+b.filter(x=>BADGES[x]).map(x=>'<span class="bdgx" title="'+BADGES[x][1]+'">'+BADGES[x][0]+'<small>'+BADGES[x][1]+'</small></span>').join('')+'</div>':'';
+const pendHw=()=>((HOME&&HOME.hw)||[]).filter(x=>!x.sub);
+const pendAll=()=>pendPolls().length+pendHw().length;
+const MSEEN=()=>'mseen_'+(HOME&&HOME.id);
+const unreadMsgs=()=>{const t=+ls(MSEEN())||0;return((HOME&&HOME.msgs)||[]).filter(m=>m.from==='t'&&m.t>t).length};
+function hwSection(){const hs=(HOME.hw||[]);if(!hs.length)return'';
+  return '<h1 style="margin-bottom:4px">تکلیف‌ها</h1><p class="sub" style="margin-bottom:12px">کارهایی که استاد برایت گذاشته.</p>'+hs.slice().sort((a,b)=>(a.sub?1:0)-(b.sub?1:0)||(a.due||9e15)-(b.due||9e15)).map(x=>{
+    const st=x.sub?(x.sub.sc!=null?'<span class="chip open"><i class="dot"></i>نمره: '+fmt(x.sub.sc)+'</span>':'<span class="chip open"><i class="dot"></i>تحویل شد</span>'):x.late?'<span class="chip closed"><i class="dot"></i>مهلت گذشته</span>':'<span class="chip soon"><i class="dot"></i>تحویل نشده</span>';
+    return '<div class="glass card qc"><div class="row"><h3 class="sp">'+esc(x.t)+'</h3>'+st+'</div>'+(x.d?'<p class="sub" style="margin-top:4px;white-space:pre-wrap">'+esc(x.d)+'</p>':'')+'<div class="meta">'+(x.due?'<span>مهلت: '+dfmt(x.due,1)+'</span>':'<span>بدون مهلت</span>')+(x.sub&&x.sub.f?'<span>💬 '+esc(x.sub.f)+'</span>':'')+'</div><button class="bt'+(x.sub?'':' main')+' full" data-hw="'+x.id+'"'+(OFFLINE?' disabled':'')+'>'+(x.sub?'دیدن / ویرایش پاسخ':'تحویل تکلیف')+'</button></div>'}).join('')+'<div style="height:10px"></div>'}
+function tPoll(){return hwSection()+((HOME.cfg||{}).polls===false?'':tPoll0())}
+function openHw(id){const x=(HOME.hw||[]).find(z=>z.id===id);if(!x)return;const locked=x.sub&&x.sub.sc!=null;
+  let s='<div class="top"><button class="ib" id="hBack" aria-label="بازگشت">'+sm('<path d="M9 6l6 6-6 6"/>',20)+'</button><div class="tt"><b>'+esc(x.t)+'</b><span class="sub">'+(x.due?'مهلت: '+dfmt(x.due,1):'بدون مهلت')+'</span></div></div>';
+  if(x.d)s+='<div class="glass card"><p style="white-space:pre-wrap;margin:0">'+esc(x.d)+'</p></div>';
+  if(x.link)s+='<a class="bt full" href="'+esc(x.link)+'" target="_blank" rel="noopener" style="margin-bottom:10px">🔗 باز کردن لینک راهنما</a>';
+  if(x.sub&&(x.sub.f||x.sub.sc!=null))s+='<div class="glass card" style="border-right:3px solid var(--a)"><b>بازخورد استاد</b>'+(x.sub.sc!=null?'<div style="font-size:22px;margin:6px 0">'+fmt(x.sub.sc)+' <small class="sub">از ۲۰</small></div>':'')+(x.sub.f?'<p class="sub" style="margin:0">'+esc(x.sub.f)+'</p>':'')+'</div>';
+  s+='<div class="glass card"><div class="qn">پاسخ یا توضیح تو'+(x.late&&!x.sub?' · با تأخیر ثبت می‌شود':'')+'</div><textarea id="hwx" maxlength="1500" placeholder="پاسخ، توضیح یا لینک کارت را اینجا بنویس…"'+(locked?' disabled':'')+'>'+esc(x.sub?x.sub.x:'')+'</textarea></div>';
+  if(!locked)s+='<button class="bt main full" id="hSend">'+(x.sub?'ذخیره‌ی تغییرات':'تحویل تکلیف')+'</button>';else s+='<p class="sub" style="text-align:center">نمره ثبت شده و پاسخ قابل ویرایش نیست.</p>';
+  $('#rBody').innerHTML=s;show('result');anim($('#rBody'));
+  const back=()=>{show('main');TAB='po';renderMain()};$('#hBack').onclick=back;
+  const b=$('#hSend');if(b)b.onclick=async()=>{const t=$('#hwx').value.trim();if(!t){toast('چیزی بنویس یا لینک کارت را بگذار',1);return}
+    b.classList.add('busy');b.disabled=true;const r=await api('/api/student/hw/submit',{id:id,x:t});b.classList.remove('busy');b.disabled=false;
+    if(r.status===200){chime('ok');if(!RED)confetti();toast('تکلیف ثبت شد ✅');await loadHome(true);back()}else if(r.status!==401)toast(r.status===409?'نمره ثبت شده؛ ویرایش ممکن نیست.':r.status===0?'اتصال برقرار نیست.':'ثبت نشد؛ دوباره تلاش کن.',1)}}
+function openMsg(){const w=$('#mdw');ls(MSEEN(),String(Date.now()));
+  const draw=()=>{const l=(HOME.msgs||[]);w.innerHTML='<div class="md"><div class="glass sheet" role="dialog" aria-modal="true"><div class="row" style="margin-bottom:8px"><h3 class="sp" style="font-size:17px">پیام به استاد</h3><button class="bt" id="mcl" style="min-height:36px;padding:4px 14px">بستن</button></div><div class="msgs" id="mlist">'+(l.map(m=>'<div class="bub '+(m.from==='s'?'me':'th')+'"><div style="white-space:pre-wrap">'+esc(m.x)+'</div><small>'+dfmt(m.t,1)+'</small></div>').join('')||'<div class="empty">سؤال یا پیامت را بنویس؛ استاد جواب می‌دهد.</div>')+'</div><textarea id="mtx" maxlength="800" placeholder="پیامت…" style="min-height:64px"></textarea><button class="bt main full" id="msd" style="margin-top:8px">ارسال</button></div></div>';
+    const c=()=>{w.innerHTML='';renderMain(true)};$('#mcl').onclick=c;w.firstChild.onclick=e=>{if(e.target===w.firstChild)c()};const ml=$('#mlist');ml.scrollTop=ml.scrollHeight;
+    $('#msd').onclick=async()=>{const t=$('#mtx').value.trim();if(!t)return;const b=$('#msd');b.classList.add('busy');b.disabled=true;const r=await api('/api/student/msg',{x:t});b.classList.remove('busy');b.disabled=false;
+      if(r.status===200){HOME.msgs=(HOME.msgs||[]).concat([{id:-Date.now(),from:'s',x:t,t:Date.now()}]);chime('ok');draw();loadHome(true)}else if(r.status!==401)toast(r.status===429?'پیام‌های زیادی فرستادی؛ کمی بعد.':'ارسال نشد.',1)}};
+  draw()}
+
+/* polls */
+let POLL=null;
+const pendPolls=()=>((HOME&&HOME.polls)||[]).filter(p=>p.status==='open'&&!p.done);
+function tPoll0(){const ps=(HOME.polls||[]);
+  let s='<h1 style="margin-bottom:4px">نظرسنجی‌ها</h1><p class="sub" style="margin-bottom:12px">نظر تو برای بهتر شدن کلاس مهم است.</p>';
+  if(!ps.length)return s+'<div class="glass empty">هنوز نظرسنجی‌ای منتشر نشده است.</div>';
+  const ord=ps.slice().sort((a,b)=>(a.done?1:0)-(b.done?1:0));
+  return s+ord.map(p=>{let btn,lab={open:'باز',soon:'به‌زودی',closed:'بسته'}[p.status]||'';
+    if(p.done)btn='<button class="bt full" disabled>✓ نظرت ثبت شد</button>';else if(p.status==='soon')btn='<button class="bt full" disabled>به‌زودی</button>';else if(p.status==='closed')btn='<button class="bt full" disabled>بسته شده</button>';else btn='<button class="bt main full" data-poll="'+p.id+'"'+(OFFLINE?' disabled':'')+'>شرکت در نظرسنجی</button>';
+    return '<div class="glass card qc"><div class="row"><h3 class="sp">'+esc(p.t)+'</h3><span class="chip '+esc(p.status)+'"><i class="dot"></i>'+lab+'</span></div>'+(p.d?'<p class="sub" style="margin-top:4px">'+esc(p.d)+'</p>':'')+'<div class="meta"><span>'+fa(p.qs.length)+' سؤال</span><span>'+(p.anon?'🔒 ناشناس':'با نام')+'</span>'+(p.to?'<span>تا '+dfmt(p.to,1)+'</span>':'')+'</div>'+btn+'</div>'}).join('')}
+function openPoll(id){const p=(HOME.polls||[]).find(x=>x.id===id);if(!p||p.done)return;
+  POLL={p:p,a:p.qs.map(q=>q.k==='multi'?[]:q.k==='text'?'':null),sub:false};
+  let s='<div class="top"><button class="ib" id="pBack" aria-label="بازگشت">'+sm('<path d="M9 6l6 6-6 6"/>',20)+'</button><div class="tt"><b>'+esc(p.t)+'</b><span class="sub">'+(p.anon?'🔒 ناشناس؛ استاد نام تو را نمی‌بیند':'پاسخ‌ها با نام ثبت می‌شود')+'</span></div></div>';
+  if(p.d)s+='<p class="sub" style="margin:0 4px 12px">'+esc(p.d)+'</p>';
+  p.qs.forEach((q,i)=>{s+='<div class="glass card pq" data-q="'+i+'"><div class="qn">سؤال '+fa(i+1)+' از '+fa(p.qs.length)+(q.k==='multi'?' · چند گزینه می‌توانی انتخاب کنی':'')+'</div><div class="qt" style="font-size:16px">'+esc(q.q)+'</div>';
+    if(q.k==='one'||q.k==='multi')s+=q.o.map((o,k)=>'<button class="opt" data-q="'+i+'" data-k="'+k+'"><span class="l">'+(LET[k]||fa(k+1))+'</span><span class="tx">'+esc(o)+'</span></button>').join('');
+    else if(q.k==='rate')s+='<div class="stars">'+[1,2,3,4,5].map(v=>'<button class="star" data-q="'+i+'" data-v="'+v+'" aria-label="'+v+' ستاره">★</button>').join('')+'</div>';
+    else s+='<textarea data-t="'+i+'" maxlength="600" placeholder="نظرت را بنویس (اختیاری)"></textarea>';
+    s+='</div>'});
+  s+='<button class="bt main full" id="pSend" style="margin-top:6px">ثبت نظر</button>';
+  $('#rBody').innerHTML=s;show('result');anim($('#rBody'));
+  $$('#rBody .opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.q,k=+b.dataset.k,q=p.qs[i];if(q.k==='multi'){const a=POLL.a[i],x=a.indexOf(k);if(x>-1)a.splice(x,1);else a.push(k);b.classList.toggle('sel',x<0)}else{POLL.a[i]=POLL.a[i]===k?null:k;$$('#rBody .opt[data-q="'+i+'"]').forEach(y=>y.classList.toggle('sel',+y.dataset.k===POLL.a[i]))}});
+  $$('#rBody .star').forEach(b=>b.onclick=()=>{const i=+b.dataset.q,v=+b.dataset.v;POLL.a[i]=v;$$('#rBody .star[data-q="'+i+'"]').forEach(y=>y.classList.toggle('on',+y.dataset.v<=v))});
+  $$('#rBody textarea').forEach(t=>t.oninput=()=>{POLL.a[+t.dataset.t]=t.value});
+  const back=()=>{POLL=null;show('main');TAB='po';renderMain()};$('#pBack').onclick=back;
+  $('#pSend').onclick=async()=>{if(!POLL||POLL.sub)return;const any=POLL.a.some(v=>v!==null&&v!==''&&!(Array.isArray(v)&&!v.length));if(!any){toast('حداقل به یک سؤال پاسخ بده',1);return}
+    POLL.sub=true;const b=$('#pSend');b.classList.add('busy');b.disabled=true;const r=await api('/api/student/poll/submit',{id:p.id,a:POLL.a});b.classList.remove('busy');b.disabled=false;
+    if(r.status===200){chime('ok');if(!RED)confetti();toast('ممنون! نظرت ثبت شد 💙');p.done=true;POLL=null;show('main');TAB='po';await loadHome(true)}
+    else{POLL.sub=false;if(r.status===401)return;toast(r.status===409?'قبلاً در این نظرسنجی شرکت کرده‌ای.':r.status===403?'این نظرسنجی بسته است.':r.status===0?'اتصال برقرار نیست.':'ثبت نشد؛ دوباره تلاش کن.',1);if(r.status===409||r.status===403){show('main');TAB='po';loadHome(true)}}}}
+
+/* quiz */
+async function startQuiz(id,btn){if(OFFLINE){toast('برای شروع آزمون باید آنلاین باشید',1);return}
+  btn.classList.add('busy');btn.disabled=true;const r=await api('/api/student/quiz/start',{id});btn.classList.remove('busy');btn.disabled=false;
+  if(r.status!==200){const m={closed:'این کوییز بسته شده است.',soon:'زمان این کوییز هنوز نرسیده است.',no_attempts:'تعداد دفعات مجاز تمام شده است.',off:'این کوییز غیرفعال است.',not_found:'کوییز پیدا نشد.',offline:'اتصال برقرار نیست.'};if(r.status!==401)toast(m[r.data.error]||'شروع آزمون ممکن نشد',1);if(r.status!==0&&r.status!==401)loadHome(true);return}
+  const d=r.data;QZ={aid:d.aid,title:d.title,qs:d.qs||[],ans:(d.qs||[]).map(q=>q.k==='desc'?{x:'',img:''}:null),i:0,off:d.serverNow-Date.now(),deadline:d.deadline,sub:false};
+  if(!QZ.qs.length){toast('این کوییز سؤالی ندارد',1);QZ=null;return}
+  $('#qTitle').textContent=d.title;show('quiz');renderQ(0,1);tick();QZ.tm=setInterval(tick,250);
+  window.onbeforeunload=e=>{e.preventDefault();e.returnValue='';return ''};
+  try{history.pushState({q:1},'')}catch(e){}window.addEventListener('popstate',popG);andr('keepAwake',true);
+  if(d.resumed)toast('آزمون قبلی ادامه دارد؛ زمان از اول شروع نشده است')}
+function popG(){if(QZ){try{history.pushState({q:1},'')}catch(e){}toast('برای خروج از آزمون، دکمه‌ی ✕ را بزنید',1)}}
+function cleanupQuiz(){if(QZ&&QZ.tm)clearInterval(QZ.tm);QZ=null;window.onbeforeunload=null;window.removeEventListener('popstate',popG);andr('keepAwake',false)}
+function tick(){if(!QZ)return;const left=QZ.deadline-(Date.now()+QZ.off),t=$('#qTimer');
+  if(left<=0){t.textContent='۰۰:۰۰';if(!QZ.sub)submitQuiz(true);return}
+  const s=Math.ceil(left/1000),mm=Math.floor(s/60),ss=s%60;t.textContent=fa(mm,{minimumIntegerDigits:2})+':'+fa(ss,{minimumIntegerDigits:2});t.classList.toggle('low',left<60000)}
+const isAns=(k)=>{const a=QZ.ans[k];return a!==null&&(typeof a!=='object'||!!(a.x&&a.x.trim())||!!a.img)};
+function renderQ(i,first,rev){if(!QZ)return;const q=QZ.qs[i],n=QZ.qs.length;QZ.i=i;
+  if(q.k==='desc'){const a=QZ.ans[i];
+    $('#qBody').innerHTML='<div class="'+(first?'':'sl'+(rev?' rv':''))+'"><div class="qn">سؤال تشریحی '+fa(i+1)+' از '+fa(n)+(q.w&&q.w!==1?' · بارم '+fa(q.w):'')+'</div><div class="qt">'+esc(q.q)+'</div><textarea class="dsc" id="dx" maxlength="3000" placeholder="پاسخت را اینجا بنویس…">'+esc(a.x)+'</textarea><div class="shot"><button type="button" class="photo-btn" id="dph">'+sm('<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',18)+(a.img?'تغییر عکس برگه':'ارسال عکس از برگه‌ی من')+'</button>'+(a.img?'<button type="button" class="bt" id="drm" style="min-height:40px">حذف عکس</button>':'')+'</div>'+(a.img?'<div class="shot"><img src="'+a.img+'" alt="عکس برگه"></div>':'')+'<p class="sub" style="margin-top:8px;font-size:12.5px">می‌توانی جواب را تایپ کنی، از برگه‌ات عکس بفرستی، یا هر دو.</p></div>';
+    $('#dx').oninput=e=>{QZ.ans[i].x=e.target.value;upd()};
+    $('#dph').onclick=()=>pickFile(async f=>{try{QZ.ans[i].img=await shrinkImg(f,1400,false,.8);renderQ(i,1)}catch(e){toast('این فایل عکس معتبر نیست',1)}});
+    const rm=$('#drm');if(rm)rm.onclick=()=>{QZ.ans[i].img='';renderQ(i,1)};
+    $('#qPrev').disabled=i===0;const last=i===n-1;$('#qNext').textContent=last?'پایان و ثبت':'بعدی';upd();return}
+  $('#qBody').innerHTML='<div class="'+(first?'':'sl'+(rev?' rv':''))+'"><div class="qn">سؤال '+fa(i+1)+' از '+fa(n)+'</div><div class="qt">'+esc(q.q)+'</div>'+q.o.map((o,k)=>'<button class="opt'+(QZ.ans[i]===k?' sel':'')+'" data-k="'+k+'"><span class="l">'+(LET[k]||fa(k+1))+'</span><span class="tx">'+esc(o)+'</span></button>').join('')+'</div>';
+  $$('#qBody .opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;QZ.ans[i]=QZ.ans[i]===k?null:k;$$('#qBody .opt').forEach(x=>x.classList.toggle('sel',+x.dataset.k===QZ.ans[i]));upd()});
+  $('#qPrev').disabled=i===0;const last=i===n-1;$('#qNext').textContent=last?'پایان و ثبت':'بعدی';upd()}
+function upd(){const n=QZ.qs.length,d=QZ.ans.filter((x,k)=>isAns(k)).length;$('#qPb').style.width=(d/n*100)+'%';
+  $('#qDots').innerHTML=QZ.qs.map((_,k)=>'<button class="'+(isAns(k)?'dn ':'')+(k===QZ.i?'cur':'')+'" data-i="'+k+'">'+fa(k+1)+'</button>').join('');
+  $$('#qDots button').forEach(b=>b.onclick=()=>{const k=+b.dataset.i;if(k!==QZ.i)renderQ(k,0,k<QZ.i)});const c=$('#qDots .cur');if(c)c.scrollIntoView({inline:'center',block:'nearest'})}
+$('#qPrev').onclick=()=>{if(QZ&&QZ.i>0)renderQ(QZ.i-1,0,1)};
+$('#qNext').onclick=()=>{if(!QZ)return;if(QZ.i<QZ.qs.length-1)renderQ(QZ.i+1);else submitQuiz(false)};
+$('#qx').onclick=async()=>{if(!QZ)return;if(await box({title:'خروج از آزمون',body:'زمان آزمون همچنان ادامه دارد و پاسخ‌های فعلی ثبت نمی‌شوند. خارج می‌شوید؟',ok:'خروج',cancel:'ماندن'})){cleanupQuiz();show('main');loadHome(true)}};
+async function submitQuiz(auto){if(!QZ||QZ.sub)return;
+  if(!auto){const un=QZ.ans.filter((x,k)=>!isAns(k)).length;if(!await box({title:'ثبت نهایی آزمون',html:un?'<b class="warn">'+fa(un)+' سؤال بدون پاسخ</b> مانده است. بعد از ثبت نمی‌توانید تغییر دهید.':'همه‌ی سؤال‌ها پاسخ داده شده‌اند. ثبت نهایی انجام شود؟',ok:'ثبت نهایی',cancel:'بازبینی'}))return}
+  if(!QZ)return;QZ.sub=true;if(auto)toast('زمان تمام شد؛ در حال ثبت پاسخ‌ها…');
+  const r=await api('/api/student/quiz/submit',{aid:QZ.aid,ans:QZ.ans});
+  if(r.status===200){cleanupQuiz();showResult(r.data,false);loadHome(true);return}
+  if(r.status===0){toast('اتصال برقرار نیست؛ دوباره تلاش می‌کنیم',1);const q=QZ;setTimeout(()=>{if(QZ===q){q.sub=false;submitQuiz(true)}},auto?3000:0);if(!auto)q.sub=false;return}
+  if(r.status===401)return;
+  cleanupQuiz();toast(r.status===409?'این آزمون قبلاً ثبت شده است.':'ثبت آزمون ممکن نشد',1);show('main');loadHome(true)}
+async function openAttempt(id){const r=await api('/api/student/attempt?id='+id);if(r.status===200)showResult(r.data,true);else if(r.status!==401)toast('نتیجه پیدا نشد',1)}
+function showResult(d,hist){const sc=d.sc||0,ok=sc>=PASS&&!d.exp&&!d.pend;
+  const msg=d.pend?'ثبت شد؛ منتظر تصحیح استاد':d.exp?'زمان آزمون تمام شد':sc>=18?'عالی بود!':sc>=14?'خیلی خوب!':sc>=PASS?'قبول شدی؛ ادامه بده':'دفعه‌ی بعد بهتر می‌شود';
+  let s='<div class="top"><button class="ib" id="rBack" aria-label="بازگشت">'+sm('<path d="M9 6l6 6-6 6"/>',20)+'</button><div class="tt"><b>'+esc(d.title)+'</b></div></div>';
+  s+='<div class="glass rs">'+ring(sc*5,170,cnt(sc,Math.abs(sc*10-Math.round(sc*10))>1e-9?2:1),'از ۲۰',14)+'<h1 class="'+(ok?'good':d.exp?'warn':'')+'">'+msg+'</h1><p class="sub">'+fa(d.c)+' پاسخ درست از '+fa(d.t)+' سؤال ('+fa(Math.round(d.pct||0))+'٪)</p>'+(d.pend?'<p class="warn" style="margin-top:8px;font-size:13px">سؤال‌های تشریحی تو را استاد تصحیح می‌کند. نمره‌ی بالا فقط بخش تستی است و نمره‌ی نهایی بعد از تصحیح اعلام می‌شود.</p>':'')+(d.exp?'<p class="warn" style="margin-top:8px;font-size:13px">پاسخ‌هایی که پس از پایان زمان ارسال شدند ثبت نشدند.</p>':'')+'</div>';
+  if(d.review&&d.review.length&&d.rv!=='none'){s+='<h2>مرور پاسخ‌ها</h2>'+d.review.map((q,i)=>q.k==='desc'?'<div class="glass card rv"><div class="qn">سؤال تشریحی '+fa(i+1)+' · '+(q.pts==null?'<span class="warn">منتظر تصحیح</span>':'<span class="'+(q.ok?'good':'badc')+'">نمره: '+fmt(q.pts)+' از '+fmt(q.w)+'</span>')+'</div><div class="qt">'+esc(q.q)+'</div>'+(q.x?'<div class="ex" style="white-space:pre-wrap">'+esc(q.x)+'</div>':'<p class="sub">پاسخ متنی نداشتی.</p>')+(q.img?'<img class="upimg" data-up="'+esc(q.img)+'" alt="برگه‌ی تو" style="max-width:100%;border-radius:14px;margin-top:8px">':'')+(d.rv==='full'&&q.e&&q.pts!=null?'<div class="ex">پاسخ نمونه: '+esc(q.e)+'</div>':'')+'</div>':'<div class="glass card rv"><div class="qn">سؤال '+fa(i+1)+' · '+(q.pick==null?'<span class="warn">بی‌پاسخ</span>':q.ok?'<span class="good">درست</span>':'<span class="badc">نادرست</span>')+'</div><div class="qt">'+esc(q.q)+'</div>'+q.o.map((o,k)=>{let c='',tag='';if(d.rv==='full'&&q.right===k){c='ok';tag=q.pick===k?'':'<small class="good">پاسخ درست</small>'}if(q.pick===k){c=q.ok?'ok':'no';tag='<small class="'+(q.ok?'good':'badc')+'">پاسخ تو</small>'}return '<div class="opt '+c+'"><span class="l">'+(LET[k]||fa(k+1))+'</span><span class="tx">'+esc(o)+'</span>'+tag+'</div>'}).join('')+(d.rv==='full'&&q.e?'<div class="ex">'+esc(q.e)+'</div>':'')+'</div>').join('')}
+  s+='<button class="bt main full" id="rHome" style="margin-top:8px">بازگشت</button>';
+  $('#rBody').innerHTML=s;show('result');anim($('#rBody'));$$('#rBody img[data-up]').forEach(async im=>{const u=await authBlob('/api/student/upload?n='+encodeURIComponent(im.dataset.up));if(u)im.src=u});
+  const back=()=>{show('main');TAB='quiz';renderMain()};$('#rBack').onclick=back;$('#rHome').onclick=back;
+  if(ok&&!hist&&!RED)confetti()}
+function confetti(){const c=$('#cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const cols=['#5eead4','#a78bfa','#fbbf24','#fb7185','#60a5fa'];
+  const P=Array.from({length:130},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,w:6+Math.random()*6,h:8+Math.random()*8,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.random()*5|0]}));const s=performance.now();
+  (function f(now){const t=now-s;x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.r+=p.vr;x.save();x.globalAlpha=Math.max(0,1-t/3200);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(t<3200)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})(s)}
+
+/* misc */
+$('#bell').onclick=openFeed;
+$('#rfBtn').onclick=async()=>{const b=$('#rfBtn');b.classList.add('spin');await loadHome(true);setTimeout(()=>b.classList.remove('spin'),400);if(!OFFLINE)toast('به‌روز شد')};
+document.addEventListener('keydown',e=>{if(e.target.id==='thm'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();$('#thm-r').click()}});
+addEventListener('online',()=>{if(TOKEN&&!QZ)loadHome(true)});addEventListener('offline',()=>{if(TOKEN){OFFLINE=true;if(HOME&&$('#v-main').classList.contains('on'))renderMain(true)}});
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEF=e;if(TAB==='me'&&HOME)renderMain(true)});
+refT=setInterval(()=>{if(TOKEN&&!document.hidden&&!QZ&&$('#v-main').classList.contains('on')&&Date.now()-lastHomeAt>25000)loadHome(true)},15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&TOKEN&&!QZ&&$('#v-main').classList.contains('on')&&Date.now()-lastHomeAt>20000)loadHome(true)});
+if('serviceWorker'in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+/* boot */
+(async function(){
+  $('#lid').value=ls('sid')||'';
+  if(isApp()&&typeof A().changeServer==='function'){const b=$('#lsrv');b.style.display='';b.onclick=()=>andr('changeServer')}
+  TOKEN=ls('tok')||'';
+  if(TOKEN){show('main');const ok=await loadHome();if(!ok&&TOKEN){show('login')}}else show('login')})();
+</script>
+</body>
+</html>
