@@ -1,0 +1,66 @@
+name: Build APK
+run-name: Build ${{ inputs.job || 'default' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:     { description: 'آدرس سایت', required: false, default: '' }
+      app_name:   { description: 'نام اپ', required: false, default: '' }
+      job:        { description: 'شناسه‌ی ساخت (ربات تلگرام)', required: false, default: 'default' }
+      use_icon:   { description: 'آیکون سفارشی از شاخه‌ی apk-input', required: false, default: 'no' }
+  push:
+    branches: [main, master]
+    paths: ['android/**', '.github/workflows/build-apk.yml']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Custom icon
+        if: ${{ inputs.use_icon == 'yes' }}
+        uses: actions/checkout@v4
+        with:
+          ref: apk-input
+          path: _in
+      - name: Apply domain, name and icon
+        env:
+          DOMAIN: ${{ inputs.domain }}
+          APP_NAME: ${{ inputs.app_name }}
+          USE_ICON: ${{ inputs.use_icon }}
+        run: |
+          pip install pillow >/dev/null
+          python3 - <<'PY'
+          import os, re
+          from xml.sax.saxutils import escape
+          p = 'android/app/src/main/res/values/strings.xml'
+          s = open(p, encoding='utf-8').read()
+          d, n = os.environ.get('DOMAIN', '').strip(), os.environ.get('APP_NAME', '').strip()
+          if d: s = re.sub(r'(<string name="default_server">).*?(</string>)', lambda m: m.group(1) + escape(d) + m.group(2), s)
+          if n: s = re.sub(r'(<string name="app_name">).*?(</string>)', lambda m: m.group(1) + escape(n) + m.group(2), s)
+          open(p, 'w', encoding='utf-8').write(s)
+          if os.environ.get('USE_ICON') == 'yes' and os.path.exists('_in/apk-input/icon.png'):
+              from PIL import Image
+              im = Image.open('_in/apk-input/icon.png').convert('RGBA')
+              w, h = im.size; m = min(w, h)
+              im = im.crop(((w - m) // 2, (h - m) // 2, (w - m) // 2 + m, (h - m) // 2 + m))
+              for dpi, px in {'mdpi': 48, 'hdpi': 72, 'xhdpi': 96, 'xxhdpi': 144, 'xxxhdpi': 192}.items():
+                  out = f'android/app/src/main/res/mipmap-{dpi}'
+                  os.makedirs(out, exist_ok=True)
+                  im.resize((px, px), Image.LANCZOS).save(out + '/ic_launcher.png')
+          PY
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - name: Build debug APK
+        working-directory: android
+        run: gradle assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClassApp-${{ inputs.job || 'default' }}
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 14
